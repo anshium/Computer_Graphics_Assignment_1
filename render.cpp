@@ -33,6 +33,8 @@ int main(int argc, char **argv)
     }
     Scene scene(argv[1]);
 
+    std::cout << scene.surfaces.size() << std::endl;
+
     Integrator rayTracer(scene);
     auto renderTime = rayTracer.render();
 

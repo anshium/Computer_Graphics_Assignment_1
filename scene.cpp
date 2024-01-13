@@ -75,6 +75,7 @@ void Scene::parse(std::string sceneDirectory, nlohmann::json sceneConfig)
         auto surfacePaths = sceneConfig["surface"];
 
         uint32_t surfaceIdx = 0;
+        int i = 0;
         for (std::string surfacePath : surfacePaths) {
             surfacePath = sceneDirectory + "/" + surfacePath;
 
@@ -82,7 +83,9 @@ void Scene::parse(std::string sceneDirectory, nlohmann::json sceneConfig)
             this->surfaces.insert(this->surfaces.end(), surf.begin(), surf.end());
 
             surfaceIdx = surfaceIdx + surf.size();
+            i++; 
         }
+        std::cout << i << std::endl;
     }
     catch (nlohmann::json::exception e) {
         std::cout << "No surfaces defined." << std::endl;

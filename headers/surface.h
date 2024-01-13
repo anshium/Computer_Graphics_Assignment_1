@@ -2,11 +2,14 @@
 
 #include "common.h"
 #include "texture.h"
+#include "boundingBox.h"
 
 struct Surface {
     std::vector<Vector3f> vertices, normals;
     std::vector<Vector3i> indices;
     std::vector<Vector2f> uvs;
+
+    BoundingBox bounding_box;
 
     bool isLight;
     uint32_t shapeIdx;
