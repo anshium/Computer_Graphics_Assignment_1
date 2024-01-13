@@ -82,6 +82,11 @@ void Scene::parse(std::string sceneDirectory, nlohmann::json sceneConfig)
             auto surf = createSurfaces(surfacePath, /*isLight=*/false, /*idx=*/surfaceIdx);
             this->surfaces.insert(this->surfaces.end(), surf.begin(), surf.end());
 
+            // Adding the bounding boxes to the surfaces. Don't know if parse is the right place to add it in accordance to SE rules.
+            for(Surface surface : this->surfaces){
+                surface.updateBoundingBox();
+            }
+
             surfaceIdx = surfaceIdx + surf.size();
             i++; 
         }

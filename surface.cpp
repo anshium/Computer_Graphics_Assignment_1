@@ -199,22 +199,42 @@ Interaction Surface::rayIntersect(Ray ray)
     Interaction siFinal;
     float tmin = ray.t;
 
-    for (auto face : this->indices) {
-        Vector3f p1 = this->vertices[face.x];
-        Vector3f p2 = this->vertices[face.y];
-        Vector3f p3 = this->vertices[face.z];
+    // First check if the bounding box hits or not.
+        // Then if it hits the bounding box, check for each triangle in the bounding box
 
-        Vector3f n1 = this->normals[face.x];
-        Vector3f n2 = this->normals[face.y];
-        Vector3f n3 = this->normals[face.z];
-        Vector3f n = Normalize(n1 + n2 + n3);
+    Interaction bounding_box_interaction = this->bounding_box.rayIntersect(ray);
+    if(bounding_box_interaction.didIntersect){
+        for (auto face : this->indices) {
+            Vector3f p1 = this->vertices[face.x];
+            Vector3f p2 = this->vertices[face.y];
+            Vector3f p3 = this->vertices[face.z];
 
-        Interaction si = this->rayTriangleIntersect(ray, p1, p2, p3, n);
-        if (si.t <= tmin && si.didIntersect) {
-            siFinal = si;
-            tmin = si.t;
+            Vector3f n1 = this->normals[face.x];
+            Vector3f n2 = this->normals[face.y];
+            Vector3f n3 = this->normals[face.z];
+            Vector3f n = Normalize(n1 + n2 + n3);
+
+            Interaction si = this->rayTriangleIntersect(ray, p1, p2, p3, n);
+            if (si.t <= tmin && si.didIntersect) {
+                siFinal = si;
+                tmin = si.t;
+            }
         }
     }
 
     return siFinal;
+}
+
+void Surface::updateBoundingBox() {
+    // Assuming implicit axis-alignment. That is we are assuming the axis-aligned rectangle given the min and max points.
+
+    // Initialize the bounding box with the coordinates of the first vertex
+    if (!this->vertices.empty()) {
+        this->bounding_box.min = this->bounding_box.max = vertices[0];
+    }
+
+    // Iterate through the vertices and update the bounding box
+    for (const Vector3f& vertex : vertices) {
+        this->bounding_box.update(vertex);
+    }
 }

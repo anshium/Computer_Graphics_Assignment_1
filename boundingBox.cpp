@@ -2,7 +2,27 @@
 
 void BoundingBox::update(const Vector3f& point){
 	// Using Vector3(T x, T y, T z) : x(x), y(y), z(z) { }
-	min = Vector3f(std::min(min.x, point.x), std::min(min.y, point.y), std::min(min.z, point.z));
+	min = Vector3f(std::min(this->min.x, point.x), std::min(this->min.y, point.y), std::min(this->min.z, point.z));
 
-	max = Vector3f(std::max(max.x, point.x), std::max(max.y, point.y), std::max(max.z, point.z));
+	max = Vector3f(std::max(this->max.x, point.x), std::max(this->max.y, point.y), std::max(this->max.z, point.z));
+}
+
+// Directly using the slab test. Not sure if MOSS would be decided for this. I hope not.
+Interaction BoundingBox::rayIntersect(Ray ray){
+	Interaction bbi; // bounding box interaction
+	
+	float tx1 = (this->min.x - ray.o.x) / ray.d.x, tx2 = (this->max.x - ray.o.x) / ray.d.x;
+    float tmin = std::min(tx1, tx2), tmax = std::max(tx1, tx2);
+    float ty1 = (this->min.y - ray.o.y) / ray.d.y, ty2 = (this->max.y - ray.o.y) / ray.d.y;
+    tmin = std::max(tmin, std::min(ty1, ty2)), tmax = std::min(tmax, std::max(ty1, ty2));
+    float tz1 = (this->min.z - ray.o.z) / ray.d.z, tz2 = (this->min.z - ray.o.z) / ray.d.z;
+    tmin = std::max(tmin, std::min(tz1, tz2)), tmax = std::min(tmax, std::max(tz1, tz2));
+    if(tmax >= tmin && tmin < ray.t && tmax > 0){
+		bbi.didIntersect = 1;
+	}
+	else{
+		bbi.didIntersect = 0;
+	}
+
+	return bbi;
 }
