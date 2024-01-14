@@ -102,6 +102,7 @@ Interaction Scene::rayIntersect(Ray& ray)
     Interaction siFinal;
 
     for (auto& surface : this->surfaces) {
+        surface.updateBoundingBox(); // Target 1
         Interaction si = surface.rayIntersect(ray);
         if (si.t <= ray.t) {    
             siFinal = si;

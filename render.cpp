@@ -25,12 +25,25 @@ long long Integrator::render()
     return std::chrono::duration_cast<std::chrono::microseconds>(finishTime - startTime).count();
 }
 
+// I am not in favour of global variables
+int option = 0;
+
 int main(int argc, char **argv)
 {
-    if (argc != 3) {
-        std::cerr << "Usage: ./render <scene_config> <out_path>";
+    if (argc != 4) {
+        std::cerr << "Usage: ./render <scene_config> <out_path> <option>";
         return 1;
     }
+    std::cout << argv[3] << std::endl;
+    if(std::stoi(argv[3]) == 0){
+        option = 0;
+        std::cout << "Using Original" << std::endl;
+    }
+    else if(std::stoi(argv[3]) == 1){
+        option = 1;
+        std::cout << "Using PART_1" << std::endl;
+    }
+
     Scene scene(argv[1]);
 
     // std::cout << scene.surfaces.size() << std::endl;

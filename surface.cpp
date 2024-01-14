@@ -202,8 +202,13 @@ Interaction Surface::rayIntersect(Ray ray)
     // First check if the bounding box hits or not.
         // Then if it hits the bounding box, check for each triangle in the bounding box
 
-    Interaction bounding_box_interaction = this->bounding_box.rayIntersect(ray);
-    if(bounding_box_interaction.didIntersect){
+    // if(option == 1){
+    //     #define PART_1
+    // }
+    // else if(option == 0){
+    //     #define ORIGINAL
+    // }
+    if(option == 0){
         for (auto face : this->indices) {
             Vector3f p1 = this->vertices[face.x];
             Vector3f p2 = this->vertices[face.y];
@@ -221,6 +226,28 @@ Interaction Surface::rayIntersect(Ray ray)
             }
         }
     }
+    else if(option == 1){
+        Interaction bounding_box_interaction = this->bounding_box.rayIntersect(ray); // Target 2
+        if(bounding_box_interaction.didIntersect){  // Target 3: The algo itself.
+            // std::cout << "Here" << std::endl;
+            for (auto face : this->indices) {
+                Vector3f p1 = this->vertices[face.x];
+                Vector3f p2 = this->vertices[face.y];
+                Vector3f p3 = this->vertices[face.z];
+
+                Vector3f n1 = this->normals[face.x];
+                Vector3f n2 = this->normals[face.y];
+                Vector3f n3 = this->normals[face.z];
+                Vector3f n = Normalize(n1 + n2 + n3);
+
+                Interaction si = this->rayTriangleIntersect(ray, p1, p2, p3, n);
+                if (si.t <= tmin && si.didIntersect) {
+                    siFinal = si;
+                    tmin = si.t;
+                }
+            }
+        }
+    }
 
     return siFinal;
 }
@@ -234,7 +261,7 @@ void Surface::updateBoundingBox() {
     }
 
     // Iterate through the vertices and update the bounding box
-    for (const Vector3f& vertex : vertices) {
+    for (const Vector3f& vertex : this->vertices) {
         this->bounding_box.update(vertex);
     }
 }
