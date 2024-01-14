@@ -48,6 +48,7 @@ add_executable(render
 	texture.cpp
 
 	boundingBox.cpp
+	bvh.cpp
 
 	# DEPS
   	extern/tinyexr/deps/miniz/miniz.c
