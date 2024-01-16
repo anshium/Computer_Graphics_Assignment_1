@@ -11,7 +11,7 @@ Camera::Camera(Vector3d from, Vector3d to, Vector3d up, double fieldOfView, Vect
 
     // Determine viewport dimensions in 3D
     double fovRadians = fieldOfView * M_PI / 180.0;
-    double h = std::tan(fovRadians / 2.f);
+    double h = std::tan(fovRadians / 2.0);
     double viewportHeight = 2.0 * h * this->focusDistance;
     double viewportWidth = viewportHeight * this->aspect;
 

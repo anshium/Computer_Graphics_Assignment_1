@@ -11,7 +11,8 @@ struct BVH_Node {
 
 	int is_leaf_node;
 
-	void create_BVH_using_self_as_root(Scene scene){
+	std::vector<Surface> surfaces_inside;
 
-	}
+	void createBVH(Scene scene);
+	void reallyCreateBVH();
 };

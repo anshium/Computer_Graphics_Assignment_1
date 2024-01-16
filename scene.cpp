@@ -101,13 +101,21 @@ Interaction Scene::rayIntersect(Ray& ray)
 {
     Interaction siFinal;
 
-    for (auto& surface : this->surfaces) {
-        surface.updateBoundingBox(); // Target 1
-        Interaction si = surface.rayIntersect(ray);
-        if (si.t <= ray.t) {    
-            siFinal = si;
-            ray.t = si.t;
+    if(option == 0 || option == 1){
+        for (auto& surface : this->surfaces) {
+            surface.updateBoundingBox(); // Target 1
+            Interaction si = surface.rayIntersect(ray);
+            if (si.t <= ray.t) {    
+                siFinal = si;
+                ray.t = si.t;
+            }
         }
+    }
+
+    if(option == 2){
+        // create bvh from the bounding boxes
+
+        // search in bvh recursively
     }
 
     return siFinal;
