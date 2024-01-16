@@ -109,5 +109,28 @@ void BVH_Node::reallyCreateBVH(){
 }
 
 Interaction BVH_Node::rayIntersect(Ray ray){
-	
+	// Phele dekhna hai ki iske bounding box par intersect hui ki nahi.
+
+	// Phir dehna hai ki left pe hui ki right pe
+	// Jispe hui, uske ander jaana hai
+
+	Interaction bvhi;
+
+	// base case hai ki ki agar ek hi bounding box hai aur uspe intersect kare to us se associated surface par rayIntersect lagao.
+	if(this->surfaces_inside.size() == 1 && this->node_bounding_box.rayIntersect(ray).didIntersect == 1){
+		bvhi = this->surfaces_inside[0]->rayIntersect(ray);
+	}
+
+	bvhi = this->node_bounding_box.rayIntersect(ray);
+
+	if(bvhi.didIntersect == 1){
+		if(this->left_node->node_bounding_box.rayIntersect(ray).didIntersect == 1){
+			bvhi = this->left_node->rayIntersect(ray);
+		}
+		if(this->right_node->node_bounding_box.rayIntersect(ray).didIntersect == 1){
+			bvhi = this->right_node->rayIntersect(ray);
+		}
+	}
+
+	return bvhi;
 }
