@@ -208,7 +208,7 @@ Interaction Surface::rayIntersect(Ray ray)
     // else if(option == 0){
     //     #define ORIGINAL
     // }
-    if(option == 0){
+    if(option == 0 || option == 2){
         for (auto face : this->indices) {
             Vector3f p1 = this->vertices[face.x];
             Vector3f p2 = this->vertices[face.y];

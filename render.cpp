@@ -1,4 +1,5 @@
 #include "render.h"
+#include "bvh.h"
 
 Integrator::Integrator(Scene &scene)
 {
@@ -43,8 +44,20 @@ int main(int argc, char **argv)
         option = 1;
         std::cout << "Using PART_1" << std::endl;
     }
+    else if(std::stoi(argv[3]) == 2){
+        option = 2;
+        std::cout << "Using PART_2" << std::endl;
+    }
 
     Scene scene(argv[1]);
+
+    BVH_Node* bvh_root = new BVH_Node();
+
+    for (auto& surface : scene.surfaces) {
+        surface.updateBoundingBox(); // Target 1
+    }
+    
+    bvh_root->createBVH(&scene);
 
     // std::cout << scene.surfaces.size() << std::endl;
 

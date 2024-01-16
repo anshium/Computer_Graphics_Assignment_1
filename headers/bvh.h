@@ -13,6 +13,8 @@ struct BVH_Node {
 
 	std::vector<Surface*> surfaces_inside; // I believe it would be fine, I store the pointers to the surfaces instead of the surface itself to save space.
 
-	void createBVH(Scene scene);
+	void createBVH(Scene* scene);
 	void reallyCreateBVH();
+
+	Interaction rayIntersect(Ray ray);
 };
