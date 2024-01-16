@@ -115,21 +115,12 @@ Interaction Scene::rayIntersect(Ray& ray)
     }
 
     if(option == 2){
-        // for (auto& surface : this->surfaces) {
-        //     surface.updateBoundingBox(); // Target 1
-        // }
-
-        // create bvh from the bounding boxes
-        // BVH_Node* bvh_root = new BVH_Node();
-        // bvh_root->createBVH(this);
-        // std::cout << "Created BVH" << std::endl;
-
         // search in bvh recursively
-        // Interaction si = bvh_root->rayIntersect(ray);
-        // if (si.t <= ray.t) {    
-        //     siFinal = si;
-        //     ray.t = si.t;
-        // }
+        Interaction si = this->bvh_root->rayIntersect(ray);
+        if (si.t <= ray.t) {    
+            siFinal = si;
+            ray.t = si.t;
+        }
     }
 
     return siFinal;

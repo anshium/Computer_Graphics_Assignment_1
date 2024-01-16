@@ -11,6 +11,8 @@ struct Scene {
 
     BoundingBox bounding_box;
 
+    BVH_Node* bvh_root;
+
     Scene() {};
     Scene(std::string sceneDirectory, std::string sceneJson);
     Scene(std::string pathToJson);

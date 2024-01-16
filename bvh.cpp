@@ -109,20 +109,5 @@ void BVH_Node::reallyCreateBVH(){
 }
 
 Interaction BVH_Node::rayIntersect(Ray ray){
-	Interaction bvhi; 	// BVH Interaction
-
-
-	if(this->node_bounding_box.rayIntersect(ray).didIntersect == 1){
-		if(this->surfaces_inside.size() == 1){
-			Interaction si = this->surfaces_inside[0]->rayIntersect(ray);
-			return si;
-		}
-		bvhi.didIntersect = 1;
-		bvhi = this->left_node->rayIntersect(ray);
-		bvhi = this->right_node->rayIntersect(ray);
-
-		// both of them are returning the same bvh, which is right I believe. Let's test this out.
-	}
-
-	return bvhi;
+	
 }

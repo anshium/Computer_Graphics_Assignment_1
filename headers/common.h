@@ -30,3 +30,5 @@ struct Interaction {
     double t = 1e30;
     bool didIntersect = false;
 };
+
+struct BVH_Node;

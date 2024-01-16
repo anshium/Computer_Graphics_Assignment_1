@@ -58,7 +58,7 @@ int main(int argc, char **argv)
     }
     
     bvh_root->createBVH(&scene);
-
+    scene.bvh_root = bvh_root;
     // std::cout << scene.surfaces.size() << std::endl;
 
     Integrator rayTracer(scene);
