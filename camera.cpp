@@ -1,6 +1,6 @@
 #include "camera.h"
 
-Camera::Camera(Vector3f from, Vector3f to, Vector3f up, float fieldOfView, Vector2i imageResolution)
+Camera::Camera(Vector3d from, Vector3d to, Vector3d up, double fieldOfView, Vector2i imageResolution)
     : from(from),
     to(to),
     up(up),
@@ -10,10 +10,10 @@ Camera::Camera(Vector3f from, Vector3f to, Vector3f up, float fieldOfView, Vecto
     this->aspect = imageResolution.x / float(imageResolution.y);
 
     // Determine viewport dimensions in 3D
-    float fovRadians = fieldOfView * M_PI / 180.f;
-    float h = std::tan(fovRadians / 2.f);
-    float viewportHeight = 2.f * h * this->focusDistance;
-    float viewportWidth = viewportHeight * this->aspect;
+    double fovRadians = fieldOfView * M_PI / 180.0;
+    double h = std::tan(fovRadians / 2.f);
+    double viewportHeight = 2.0 * h * this->focusDistance;
+    double viewportWidth = viewportHeight * this->aspect;
 
     // Calculate basis vectors of the camera for the given transform
     this->w = Normalize(this->from - this->to);
@@ -21,22 +21,22 @@ Camera::Camera(Vector3f from, Vector3f to, Vector3f up, float fieldOfView, Vecto
     this->v = Normalize(Cross(this->w, this->u));
 
     // Pixel delta vectors
-    Vector3f viewportU = viewportWidth * this->u;
-    Vector3f viewportV = viewportHeight * (-this->v);
+    Vector3d viewportU = viewportWidth * this->u;
+    Vector3d viewportV = viewportHeight * (-this->v);
 
     this->pixelDeltaU = viewportU / float(imageResolution.x);
     this->pixelDeltaV = viewportV / float(imageResolution.y);
 
     // Upper left
-    this->upperLeft = from - this->w * this->focusDistance - viewportU / 2.f - viewportV / 2.f;
+    this->upperLeft = from - this->w * this->focusDistance - viewportU / 2.0 - viewportV / 2.0;
 }
 
 Ray Camera::generateRay(int x, int y)
 {
-    Vector3f pixelCenter = this->upperLeft + 0.5f * (this->pixelDeltaU + this->pixelDeltaV);
+    Vector3d pixelCenter = this->upperLeft + 0.5 * (this->pixelDeltaU + this->pixelDeltaV);
     pixelCenter = pixelCenter + x * this->pixelDeltaU + y * this->pixelDeltaV;
 
-    Vector3f direction = Normalize(pixelCenter - this->from);
+    Vector3d direction = Normalize(pixelCenter - this->from);
 
     return Ray(this->from, direction);
 }

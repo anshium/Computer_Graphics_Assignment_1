@@ -164,7 +164,9 @@ public:
 
 typedef Vector2<float> Vector2f;
 typedef Vector2<int> Vector2i;
-typedef Vector3<float> Vector3f;
+typedef Vector3<double> Vector3f;
+// typedef Vector3f Vector3d;
+typedef Vector3<double> Vector3d;
 typedef Vector3<int> Vector3i;
 
 template <typename T, typename U>

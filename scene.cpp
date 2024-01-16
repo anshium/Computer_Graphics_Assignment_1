@@ -58,9 +58,9 @@ void Scene::parse(std::string sceneDirectory, nlohmann::json sceneConfig)
         auto cam = sceneConfig["camera"];
 
         this->camera = Camera(
-            Vector3f(cam["from"][0], cam["from"][1], cam["from"][2]),
-            Vector3f(cam["to"][0], cam["to"][1], cam["to"][2]),
-            Vector3f(cam["up"][0], cam["up"][1], cam["up"][2]),
+            Vector3d(cam["from"][0], cam["from"][1], cam["from"][2]),
+            Vector3d(cam["to"][0], cam["to"][1], cam["to"][2]),
+            Vector3d(cam["up"][0], cam["up"][1], cam["up"][2]),
             float(cam["fieldOfView"]),
             this->imageResolution
         );

@@ -3,19 +3,19 @@
 #include "common.h"
 
 struct Camera {
-    Vector3f from, to, up;
-    float fieldOfView;
+    Vector3d from, to, up;
+    double fieldOfView;
     Vector2i imageResolution;
 
-    float focusDistance = 1.f;
-    float aspect;
+    double focusDistance = 1.0;
+    double aspect;
 
-    Vector3f u, v, w;
-    Vector3f pixelDeltaU, pixelDeltaV;
-    Vector3f upperLeft;
+    Vector3d u, v, w;
+    Vector3d pixelDeltaU, pixelDeltaV;
+    Vector3d upperLeft;
 
     Camera() {};
-    Camera(Vector3f from, Vector3f to, Vector3f up, float fieldOfView, Vector2i imageResolution);
+    Camera(Vector3d from, Vector3d to, Vector3d up, double fieldOfView, Vector2i imageResolution);
 
     Ray generateRay(int x, int y);
 };
