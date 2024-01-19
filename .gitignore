@@ -1,2 +1,6 @@
 scenes/*
 build/*
+
+# Log files #
+######################
+output.txt
