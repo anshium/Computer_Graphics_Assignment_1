@@ -200,7 +200,7 @@ Interaction Surface::rayIntersect(Ray ray)
     float tmin = ray.t;
 
     // First check if the bounding box hits or not.
-        // Then if it hits the bounding box, check for each triangle in the bounding box
+    // Then if it hits the bounding box, check for each triangle in the bounding box
 
     // if(option == 1){
     //     #define PART_1
@@ -222,7 +222,7 @@ Interaction Surface::rayIntersect(Ray ray)
             Interaction si = this->rayTriangleIntersect(ray, p1, p2, p3, n);
             if (si.t <= tmin && si.didIntersect) {
                 siFinal = si;
-                tmin = si.t;
+                tmin = si.t;            // But what are we getting if we have this tmin? It is anyway not being used aftwewards
             }
         }
     }

@@ -141,28 +141,114 @@ void BVH_Node::reallyCreateBVH(){
 }
 
 Interaction BVH_Node::rayIntersect(Ray ray){
-	// Phele dekhna hai ki iske bounding box par intersect hui ki nahi.
-
-	// Phir dehna hai ki left pe hui ki right pe
-	// Jispe hui, uske ander jaana hai
-
+	BVH_Node* node = this;
+	Interaction bvhi_final;
 	Interaction bvhi;
-
-	// base case hai ki ki agar ek hi bounding box hai aur uspe intersect kare to us se associated surface par rayIntersect lagao.
-	if(this->surfaces_inside.size() == 1 && this->node_bounding_box.rayIntersect(ray).didIntersect == 1){
-		bvhi = this->surfaces_inside[0]->rayIntersect(ray);
+	bvhi_final.didIntersect = 0;
+	if (this->node_bounding_box.rayIntersect(ray).didIntersect == 0){
+		bvhi_final.didIntersect = 0;
+		return bvhi_final;
 	}
+    if (this->is_leaf_node == 1)
+    {
+        return this->surfaces_inside[0]->rayIntersect(ray);
+    }
+    else
+    {
+        bvhi = this->left_node->rayIntersect(ray);
+		if(bvhi.didIntersect == 1) bvhi_final = bvhi;
+        bvhi = this->right_node->rayIntersect(ray);
+		if(bvhi.didIntersect == 1) bvhi_final = bvhi;
+    }
 
-	bvhi = this->node_bounding_box.rayIntersect(ray);
-
-	if(bvhi.didIntersect == 1){
-		if(this->left_node->node_bounding_box.rayIntersect(ray).didIntersect == 1){
-			bvhi = this->left_node->rayIntersect(ray);
-		}
-		if(this->right_node->node_bounding_box.rayIntersect(ray).didIntersect == 1){
-			bvhi = this->right_node->rayIntersect(ray);
-		}
-	}
-
-	return bvhi;
+	return bvhi_final;
 }
+
+// Interaction BVH_Node::rayIntersect(Ray ray){
+// 	// Phele dekhna hai ki iske bounding box par intersect hui ki nahi.
+
+// 	// Phir dehna hai ki left pe hui ki right pe
+// 	// Jispe hui, uske ander jaana hai
+
+// 	Interaction bvhi_final;
+//     float tmin = ray.t;
+
+// 	bvhi_final.didIntersect = 0;
+
+// 	Interaction bvhi_root = this->node_bounding_box.rayIntersect(ray);
+
+// 	// ============================BASE CASE SECTION BEGINS============================
+// 	// Agar main bvhi_root pe hi intersect nahi kiya to to phir rehne hi do
+// 	if(bvhi_root.didIntersect == 0) return bvhi_root;
+
+// 	// But if it did intersect, then check if it the surfaces inside are one or more. (or zero)
+// 	if(bvhi_root.didIntersect && this->surfaces_inside.size() == 0) return bvhi_root;
+// 	if(bvhi_root.didIntersect && this->surfaces_inside.size() == 1){
+// 		Interaction bvhi = this->surfaces_inside[0]->rayIntersect(ray);
+// 		if (bvhi.t <= tmin && bvhi.didIntersect) {
+// 			bvhi_final = bvhi;
+// 			tmin = bvhi.t;
+// 		}
+
+// 		return bvhi_final;
+// 	}
+
+// 	// ============================BASE CASE SECTION ENDS  ============================
+
+// 	if(bvhi_root.didIntersect == 1){
+// 		if(this->left_node->node_bounding_box.rayIntersect(ray).didIntersect == 1){
+// 			Interaction bvhi = this->left_node->rayIntersect(ray);
+// 			if (bvhi.t <= tmin && bvhi.didIntersect) {
+// 				bvhi_final = bvhi;
+// 				tmin = bvhi.t;
+// 			}
+// 		}
+// 		if(this->right_node->node_bounding_box.rayIntersect(ray).didIntersect == 1){
+// 			Interaction bvhi = this->right_node->rayIntersect(ray);
+// 			if (bvhi.t <= tmin && bvhi.didIntersect) {
+// 				bvhi_final = bvhi;
+// 				tmin = bvhi.t;
+// 			}
+// 		}
+// 	}
+// 	else{
+// 		bvhi_final.didIntersect = 0;
+// 	}
+
+// 	return bvhi_final;
+
+// 	// ---------------------------------------------------------------------------------------------------------------------------------
+// 	/*
+// 	// base case hai ki ki agar ek hi bounding box hai aur uspe intersect kare to us se associated surface par rayIntersect lagao.
+// 	if(this->surfaces_inside.size() == 1 && this->node_bounding_box.rayIntersect(ray).didIntersect == 1){
+// 		Interaction bvhi = this->surfaces_inside[0]->rayIntersect(ray);
+// 		if (bvhi.t <= tmin && bvhi.didIntersect) {
+// 			bvhi_final = bvhi;
+// 			tmin = bvhi.t;
+// 		}
+// 		return bvhi_final;
+// 	}
+
+// 	// Should a tmin check be applied here?
+// 	Interaction bvhi = this->node_bounding_box.rayIntersect(ray);
+
+// 	if(bvhi.didIntersect == 1){
+// 		if(this->left_node->node_bounding_box.rayIntersect(ray).didIntersect == 1){
+// 			Interaction bvhi = this->left_node->rayIntersect(ray);
+// 			if (bvhi.t <= tmin && bvhi.didIntersect) {
+// 				bvhi_final = bvhi;
+// 				tmin = bvhi.t;
+// 			}
+// 		}
+// 		if(this->right_node->node_bounding_box.rayIntersect(ray).didIntersect == 1){
+// 			Interaction bvhi = this->right_node->rayIntersect(ray);
+// 			if (bvhi.t <= tmin && bvhi.didIntersect) {
+// 				bvhi_final = bvhi;
+// 				tmin = bvhi.t;
+// 			}
+// 		}
+// 	}
+
+// 	return bvhi_final;
+// 	*/
+// }

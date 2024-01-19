@@ -8,6 +8,8 @@ void BoundingBox::update(const Vector3f& point){
 }
 
 // Directly using the slab test. Not sure if MOSS would be decided for this. I hope not.
+
+// Ye function yeh nahi batata hai ki kahan intersect hua. Ye bas yahi batata hai ki hua ki nahi hua
 Interaction BoundingBox::rayIntersect(Ray ray){
 	Interaction bbi; // bounding box interaction
 	
