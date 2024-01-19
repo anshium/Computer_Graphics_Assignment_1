@@ -56,9 +56,11 @@ int main(int argc, char **argv)
     for (auto& surface : scene.surfaces) {
         surface.updateBoundingBox(); // Target 1
     }
-    
-    bvh_root->createBVH(&scene);
-    scene.bvh_root = bvh_root;
+
+    if(option == 2){
+        bvh_root->createBVH(&scene);
+        scene.bvh_root = bvh_root;
+    }
     // std::cout << scene.surfaces.size() << std::endl;
 
     Integrator rayTracer(scene);

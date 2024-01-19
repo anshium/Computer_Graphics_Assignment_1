@@ -48,6 +48,12 @@ void BVH_Node::reallyCreateBVH(){
 	}
 
 	Vector3d range = this->node_bounding_box.max - this->node_bounding_box.min;
+	std::cout << "+-+-+-Node Bounding Box Information: -+-+-+" << std::endl;
+	std::cout << this->node_bounding_box.min.x << " " << this->node_bounding_box.min.y << " " << this->node_bounding_box.min.z << std::endl;
+	std::cout << this->node_bounding_box.max.x << " " << this->node_bounding_box.max.y << " " << this->node_bounding_box.max.z << std::endl;
+	std::cout << "+-+-+-Node Bounding Box Information Ends: -+-+-+	" << std::endl;
+
+	
 	int axis = 0;							// by default the x-axis
 	if(range.y > range.x) axis = 1;			// if y axis is larger than the x axis
 	if(range.z > range[axis]) axis = 2;		// if z is the longest axis
