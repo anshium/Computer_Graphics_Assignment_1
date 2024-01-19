@@ -31,11 +31,16 @@ void BVH_Node::createBVH(Scene* scene){
 }
 
 void BVH_Node::reallyCreateBVH(){
-	if(this->surfaces_inside.size() == 0 || this->surfaces_inside.size() == 1){
+	if(this->surfaces_inside.size() == 0){ // Was the problem here?
 		this->is_leaf_node = 1;
 		return;
 	}
-
+	if(this->surfaces_inside.size() == 1){ // Was the problem here? Yes there was!
+		this->node_bounding_box.min = surfaces_inside[0]->bounding_box.min;
+		this->node_bounding_box.max = surfaces_inside[0]->bounding_box.max;
+		this->is_leaf_node = 1;
+		return;
+	}
 	if(this->surfaces_inside.size() >= 2){
 		this->node_bounding_box.min = surfaces_inside[0]->bounding_box.min;
 		this->node_bounding_box.max = surfaces_inside[0]->bounding_box.max;
@@ -140,29 +145,92 @@ void BVH_Node::reallyCreateBVH(){
 	std::cout << "Exiting reallyCreateBVH" << std::endl;
 }
 
-Interaction BVH_Node::rayIntersect(Ray ray){
-	BVH_Node* node = this;
-	Interaction bvhi_final;
-	Interaction bvhi;
-	bvhi_final.didIntersect = 0;
-	if (this->node_bounding_box.rayIntersect(ray).didIntersect == 0){
-		bvhi_final.didIntersect = 0;
-		return bvhi_final;
-	}
-    if (this->is_leaf_node == 1)
-    {
-        return this->surfaces_inside[0]->rayIntersect(ray);
+void BVH_Node::printBVH_Information(int level){
+	static int index_assignment = 1;
+    if (this->surfaces_inside.size() == 0){
+        std::cout << "This is a leaf node 0" << std::endl;
+        return;
     }
-    else
-    {
-        bvhi = this->left_node->rayIntersect(ray);
-		if(bvhi.didIntersect == 1) bvhi_final = bvhi;
-        bvhi = this->right_node->rayIntersect(ray);
-		if(bvhi.didIntersect == 1) bvhi_final = bvhi;
+	if (this->surfaces_inside.size() == 1){
+		this->index = index_assignment++;
+        std::cout << "This is a leaf node 1, has index: " << this->index << "." << std::endl;
+		std::cout << "Bounding box limits:" << std::endl;
+		std::cout << this->node_bounding_box.min.x << " " << this->node_bounding_box.min.y << " " << this->node_bounding_box.min.z << std::endl;
+	std::cout << this->node_bounding_box.max.x << " " << this->node_bounding_box.max.y << " " << this->node_bounding_box.max.z << std::endl;
+		std::cout << "Bounding box limits end:" << std::endl;
+        return;
+    }
+    else{
+        std::cout << "Printing information of left to level: " << level << ", has surfaces: " << this->left_node->surfaces_inside.size() << std::endl;
+		if(this->left_node) this->left_node->printBVH_Information(level + 1);
+
+        std::cout << "Printing information of right to level: " << level << ", has surfaces: " << this->right_node->surfaces_inside.size() << std::endl;
+		if(this->right_node) this->right_node->printBVH_Information(level + 1);
+    }
+    return;
+}
+
+Interaction BVH_Node::rayIntersect(Ray ray){
+    BVH_Node* node = this;
+    Interaction bvhi_final;
+    Interaction bvhi;
+    bvhi_final.didIntersect = 0;
+
+    if (this->node_bounding_box.rayIntersect(ray).didIntersect == 0) {
+        // No intersection with the bounding box, return the default value
+        std::cout << "No bounding box intersection." << std::endl;
+
+		std::cout << "Bounding box limits:" << std::endl;
+		std::cout << this->node_bounding_box.min.x << " " << this->node_bounding_box.min.y << " " << this->node_bounding_box.min.z << std::endl;
+	std::cout << this->node_bounding_box.max.x << " " << this->node_bounding_box.max.y << " " << this->node_bounding_box.max.z << std::endl;
+		std::cout << "Bounding box limits end:" << std::endl;
+
+		std::cout << "Ray Information" << std::endl;
+		std::cout << "Direction " << ray.d.x << ", " << ray.d.y << ", " << ray.d.z << std::endl;
+		std::cout << "Direction " << ray.o.x << ", " << ray.o.y << ", " << ray.o.z << std::endl;
+
+        return bvhi_final;
     }
 
-	return bvhi_final;
+    if (this->is_leaf_node == 1) {
+        // If it's a leaf node, directly compute the intersection with the surface
+        Interaction si = this->surfaces_inside[0]->rayIntersect(ray);
+        std::cout << "Leaf node intersection. Surface index: " << this->index << ", t: " << si.t << std::endl;
+        return si;
+    }
+    else {
+        // Recursive intersection with both left and right nodes
+        Interaction left_intersection = this->left_node->rayIntersect(ray);
+        Interaction right_intersection = this->right_node->rayIntersect(ray);
+
+        // Check which intersection is closer
+        if (left_intersection.didIntersect && right_intersection.didIntersect) {
+            float left_distance = left_intersection.t;
+            float right_distance = right_intersection.t;
+
+            // Choose the closer intersection
+            if (left_distance < right_distance) {
+                bvhi_final = left_intersection;
+                std::cout << "Left ---" << std::endl;
+            } else {
+                bvhi_final = right_intersection;
+                std::cout << "Right ---" << std::endl;
+            }
+        } else if (left_intersection.didIntersect) {
+            bvhi_final = left_intersection;
+            std::cout << "Left ---" << std::endl;
+        } else if (right_intersection.didIntersect) {
+            bvhi_final = right_intersection;
+            std::cout << "Right ---" << std::endl;
+        }
+    }
+
+    std::cout << "Final intersection result: " << bvhi_final.didIntersect << ", t: " << bvhi_final.t << std::endl;
+
+    return bvhi_final;
 }
+
+
 
 // Interaction BVH_Node::rayIntersect(Ray ray){
 // 	// Phele dekhna hai ki iske bounding box par intersect hui ki nahi.

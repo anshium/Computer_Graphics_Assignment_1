@@ -98,6 +98,7 @@ void Scene::parse(std::string sceneDirectory, nlohmann::json sceneConfig)
     }
 }
 
+
 Interaction Scene::rayIntersect(Ray& ray)
 {
     Interaction siFinal;
@@ -116,6 +117,7 @@ Interaction Scene::rayIntersect(Ray& ray)
 
     if(option == 2){
         // search in bvh recursively
+        if(print_once++ == 0) this->bvh_root->printBVH_Information(0);
         Interaction si = this->bvh_root->rayIntersect(ray);
         if (si.t <= ray.t) {    
             siFinal = si;

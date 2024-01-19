@@ -10,11 +10,21 @@ Integrator::Integrator(Scene &scene)
 long long Integrator::render()
 {
     auto startTime = std::chrono::high_resolution_clock::now();
+    int x = 960;
+    int y = 540;
     for (int x = 0; x < this->scene.imageResolution.x; x++) {
         for (int y = 0; y < this->scene.imageResolution.y; y++) {
             Ray cameraRay = this->scene.camera.generateRay(x, y);
             Interaction si = this->scene.rayIntersect(cameraRay);
-
+            if(x == 960 && y == 540){
+                std::cout << "This is the center point" << std::endl;
+                if(si.didIntersect){
+                    std::cout << "RAY INTERSECTED" << std::endl;
+                }
+                else if(!si.didIntersect){
+                    std::cout << "RAY DID NOT INTERSECT" << std::endl;
+                }
+            }
             if (si.didIntersect)
                 this->outputImage.writePixelColor(0.5f * (si.n + Vector3f(1.f, 1.f, 1.f)), x, y);
             else
@@ -29,8 +39,11 @@ long long Integrator::render()
 // I am not in favour of global variables
 int option = 0;
 
+int print_once = 0;
+
 int main(int argc, char **argv)
 {
+    print_once = 0;
     if (argc != 4) {
         std::cerr << "Usage: ./render <scene_config> <out_path> <option>";
         return 1;
@@ -60,6 +73,11 @@ int main(int argc, char **argv)
     if(option == 2){
         bvh_root->createBVH(&scene);
         scene.bvh_root = bvh_root;
+
+        std::cout << "Bounding box limits:" << std::endl;
+		std::cout << bvh_root->node_bounding_box.min.x << " " << bvh_root->node_bounding_box.min.y << " " << bvh_root->node_bounding_box.min.z << std::endl;
+	std::cout << bvh_root->node_bounding_box.max.x << " " << bvh_root->node_bounding_box.max.y << " " << bvh_root->node_bounding_box.max.z << std::endl;
+		std::cout << "Bounding box limits end:" << std::endl;
     }
     // std::cout << scene.surfaces.size() << std::endl;
 

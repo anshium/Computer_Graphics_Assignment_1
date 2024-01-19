@@ -17,4 +17,8 @@ struct BVH_Node {
 	void reallyCreateBVH();
 
 	Interaction rayIntersect(Ray ray);
+
+	void printBVH_Information(int level);
+
+	int index; // experimental, for leaf nodes only
 };

@@ -15,6 +15,8 @@
 
 extern int option;
 
+extern int print_once;
+
 struct Ray {
     Vector3d o, d;
     double t = 1e30;
