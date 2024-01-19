@@ -47,7 +47,10 @@ void BVH_Node::reallyCreateBVH(){
 		this->node_bounding_box.update(surface_ptr->bounding_box.max);
 	}
 
+	// I believe that it would a good idea to have the splitting position based on the extent of the centers and not the bounding boxes minimum and maximum as I was having problems with that previously in one case (Donuts).
+
 	Vector3d range = this->node_bounding_box.max - this->node_bounding_box.min;
+
 	std::cout << "+-+-+-Node Bounding Box Information: -+-+-+" << std::endl;
 	std::cout << this->node_bounding_box.min.x << " " << this->node_bounding_box.min.y << " " << this->node_bounding_box.min.z << std::endl;
 	std::cout << this->node_bounding_box.max.x << " " << this->node_bounding_box.max.y << " " << this->node_bounding_box.max.z << std::endl;
@@ -58,7 +61,21 @@ void BVH_Node::reallyCreateBVH(){
 	if(range.y > range.x) axis = 1;			// if y axis is larger than the x axis
 	if(range.z > range[axis]) axis = 2;		// if z is the longest axis
 
-	double splitting_position = this->node_bounding_box.min[axis] + 0.5 * range[axis];
+	double min_value = 1e30; 	// Some very large value - Might cause bugs here if scene is very large which is usually unlikely
+	double max_value = -1e30;
+
+	for(Surface* surface_ptr : this->surfaces_inside){
+		float center_of_bb = (surface_ptr->bounding_box.min[axis] + surface_ptr->bounding_box.max[axis]) / 2;
+		if(center_of_bb < min_value){
+			min_value = center_of_bb;
+		}
+		if(center_of_bb > max_value){
+			max_value = center_of_bb;
+		}
+	}
+
+	// double splitting_position = this->node_bounding_box.min[axis] + 0.5 * range[axis];
+	double splitting_position = (min_value + max_value) / 2;
 
 	// Now add the surfaces accordingly to the left node or the right node.
 	this->left_node = new BVH_Node();
@@ -84,7 +101,16 @@ void BVH_Node::reallyCreateBVH(){
 		double bounding_box_center = (surface_ptr->bounding_box.max[axis] + surface_ptr->bounding_box.min[axis]) / 2;
 		std::cout << "Bounding Box Center: " << bounding_box_center<< std::endl;
 
-		if(bounding_box_center <= splitting_position){
+		if(bounding_box_center < splitting_position){
+			this->left_node->surfaces_inside.push_back(surface_ptr);
+			this->is_leaf_node = 0;
+
+			std::cout << "Put to Left" << std::endl;
+
+			added_to_left += 1;
+		}
+		// This tie-breaker funnily works! :)
+		else if(bounding_box_center == splitting_position && added_to_left % 2 == 0){
 			this->left_node->surfaces_inside.push_back(surface_ptr);
 			this->is_leaf_node = 0;
 
