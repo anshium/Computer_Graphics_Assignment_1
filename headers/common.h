@@ -22,6 +22,9 @@ struct Ray {
     double t = 1e30;
     double tmax = 1e30;
 
+    // Original Pixels: For the time being - for debugging
+    int x;
+    int y;
 
     Ray(Vector3d origin, Vector3d direction, double t = 1e30, double tmax = 1e30)
         : o(origin), d(direction), t(t), tmax(tmax) {};

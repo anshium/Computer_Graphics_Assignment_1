@@ -139,6 +139,7 @@ Interaction Surface::rayPlaneIntersect(Ray ray, Vector3f p, Vector3f n)
 {
     Interaction si;
 
+
     float dDotN = Dot(ray.d, n);
     if (dDotN != 0.f) {
         float t = -Dot((ray.o - p), n) / dDotN;
@@ -148,7 +149,13 @@ Interaction Surface::rayPlaneIntersect(Ray ray, Vector3f p, Vector3f n)
             si.t = t;
             si.n = n;
             si.p = ray.o + ray.d * si.t;
+            if(ray.x == 800 && ray.y == 540){
+                std::cout << "Entered Zone RPI - I" << std::endl;
+            }
         }
+        else {if(ray.x == 800 && ray.y == 540){
+            std::cout << "Entered Zone RPI - DI" << std::endl;
+        }}
     }
 
     return si;
@@ -156,8 +163,13 @@ Interaction Surface::rayPlaneIntersect(Ray ray, Vector3f p, Vector3f n)
 
 Interaction Surface::rayTriangleIntersect(Ray ray, Vector3f v1, Vector3f v2, Vector3f v3, Vector3f n)
 {
+    if(ray.x == 800 && ray.y == 540){
+        std::cout << "Entered Zone RTI" << std::endl;
+    }
     Interaction si = this->rayPlaneIntersect(ray, v1, n);
-
+    if(ray.x == 800 && ray.y == 540){
+        std::cout << "Option: " << option << " si.didIntersect: "<<  si.didIntersect << std::endl;
+    }
     if (si.didIntersect) {
         bool edge1 = false, edge2 = false, edge3 = false;
 
@@ -166,6 +178,9 @@ Interaction Surface::rayTriangleIntersect(Ray ray, Vector3f v1, Vector3f v2, Vec
             Vector3f nIp = Cross((si.p - v1), (v3 - v1));
             Vector3f nTri = Cross((v2 - v1), (v3 - v1));
             edge1 = Dot(nIp, nTri) > 0;
+            if(ray.x == 800 && ray.y == 540){
+                std::cout << nIp.x << " " << nIp.y << " " << nIp.z << " " << nTri.x << " " << nTri.y << " " << nTri.z << std::endl;
+            }
         }
 
         // Check edge 2
@@ -173,6 +188,9 @@ Interaction Surface::rayTriangleIntersect(Ray ray, Vector3f v1, Vector3f v2, Vec
             Vector3f nIp = Cross((si.p - v1), (v2 - v1));
             Vector3f nTri = Cross((v3 - v1), (v2 - v1));
             edge2 = Dot(nIp, nTri) > 0;
+            if(ray.x == 800 && ray.y == 540){
+                std::cout << nIp.x << " " << nIp.y << " " << nIp.z << " " << nTri.x << " " << nTri.y << " " << nTri.z << std::endl;
+            }
         }
 
         // Check edge 3
@@ -180,16 +198,29 @@ Interaction Surface::rayTriangleIntersect(Ray ray, Vector3f v1, Vector3f v2, Vec
             Vector3f nIp = Cross((si.p - v2), (v3 - v2));
             Vector3f nTri = Cross((v1 - v2), (v3 - v2));
             edge3 = Dot(nIp, nTri) > 0;
+            if(ray.x == 800 && ray.y == 540){
+                std::cout << nIp.x << " " << nIp.y << " " << nIp.z << " " << nTri.x << " " << nTri.y << " " << nTri.z << std::endl;
+            }
         }
 
         if (edge1 && edge2 && edge3) {
             // Intersected triangle!
             si.didIntersect = true;
+            if(ray.x == 800 && ray.y == 540){
+                std::cout << "Entered Zone RTI - I" << std::endl;
+            }
         }
         else {
             si.didIntersect = false;
+            if(ray.x == 800 && ray.y == 540){
+                std::cout << "Entered Zone RTI - DI" << std::endl;
+            }
         }
+
     }
+    else{if(ray.x == 800 && ray.y == 540){
+        std::cout << "Entered Zone RTI - DNI" << std::endl;
+    }}
 
     return si;
 }
@@ -209,6 +240,9 @@ Interaction Surface::rayIntersect(Ray ray)
     //     #define ORIGINAL
     // }
     if(option == 0 || option == 2){
+        // if(ray.x == 800 && ray.y == 540){
+		// 	std::cout << "Entered Zone P" << std::endl;
+		// }
         for (auto face : this->indices) {
             Vector3f p1 = this->vertices[face.x];
             Vector3f p2 = this->vertices[face.y];
@@ -221,6 +255,9 @@ Interaction Surface::rayIntersect(Ray ray)
 
             Interaction si = this->rayTriangleIntersect(ray, p1, p2, p3, n);
             if (si.t <= tmin && si.didIntersect) {
+                // if(ray.x == 800 && ray.y == 540){
+                //     std::cout << "Entered Zone Q" << std::endl;
+                // }
                 siFinal = si;
                 tmin = si.t;            // But what are we getting if we have this tmin? It is anyway not being used aftwewards
             }

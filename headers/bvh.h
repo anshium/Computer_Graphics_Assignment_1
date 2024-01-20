@@ -21,4 +21,6 @@ struct BVH_Node {
 	void printBVH_Information(int level);
 
 	int index; // experimental, for leaf nodes only
+
+	// void updateSurfacesForBVH_Node(Scene* scene_ptr);	// Adding this function to ensure that the surfaces are being correctly filled.
 };

@@ -1,0 +1,29 @@
+2
+Using PART_2
+1
+1.32012 3.32012
+2.50136
+1.6826 3.6826
+2.50136
+Bounding box limits:
+-0.261101 1.32012 -4.24373
+1.99611 3.6826 -2.20688
+Bounding box limits end:
+Level 0 has 2 surfaces.
+Printing information of left to level: 0, has surfaces: 1
+This is a leaf node 1, has index: 1.
+|---- Bounding box limits:
+|---- -0.003894 1.32012 -4.24373
+|---- 1.99611 3.32012 -2.24373
+|----Bounding box limits end:
+Printing information of right to level: 0, has surfaces: 1
+This is a leaf node 1, has index: 2.
+|---- Bounding box limits:
+|---- -0.261101 1.6826 -4.20688
+|---- 1.7389 3.6826 -2.20688
+|----Bounding box limits end:
+Case 5
+This is the center point
+RAY DID NOT INTERSECT
+Render Time: 90.163002 ms
+Saved PNG: ./outpath/new4.png

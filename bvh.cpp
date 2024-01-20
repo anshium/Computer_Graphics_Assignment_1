@@ -13,6 +13,7 @@ void BVH_Node::createBVH(Scene* scene){
 	// std::cout << "Surface First Information -------------------------------------" << std::endl;
 	
 	for(int i = 0; i < scene->surfaces.size(); i++){
+		scene->surfaces[i].updateBoundingBox();
 		// std::cout << "Min " << 
 					// scene->surfaces[i].bounding_box.min.x << " " << 
 					// scene->surfaces[i].bounding_box.min.y << " " << 
@@ -21,7 +22,7 @@ void BVH_Node::createBVH(Scene* scene){
 					// scene->surfaces[i].bounding_box.max.x << " " << 
 					// scene->surfaces[i].bounding_box.max.y << " " << 
 					// scene->surfaces[i].bounding_box.max.z << std::endl;
-		this->surfaces_inside.push_back(&scene->surfaces[i]);		// Dunno if &surface would work. It didn't and wouldn't (dangling pointer)
+		this->surfaces_inside.push_back(&scene->surfaces[i]);		// Dunno if &surface would work. It didn't and wouldn't (dangling pointer)	
 	}
 
 	// std::cout << "Surface First Information Ends -------------------------------------" << std::endl;
@@ -125,7 +126,7 @@ void BVH_Node::reallyCreateBVH(){
 		}
 		else{
 			this->right_node->surfaces_inside.push_back(surface_ptr);
-			this->is_leaf_node = 1;
+			this->is_leaf_node = 0;
 
 			// std::cout << "Put to Right" << std::endl;
 			
@@ -157,10 +158,10 @@ void BVH_Node::printBVH_Information(int level){
 	if (this->surfaces_inside.size() == 1){
 		this->index = index_assignment++;
         std::cout << "This is a leaf node 1, has index: " << this->index << "." << std::endl;
-		// std::cout << "Bounding box limits:" << std::endl;
-		// std::cout << this->node_bounding_box.min.x << " " << this->node_bounding_box.min.y << " " << this->node_bounding_box.min.z << std::endl;
-	// std::cout << this->node_bounding_box.max.x << " " << this->node_bounding_box.max.y << " " << this->node_bounding_box.max.z << std::endl;
-		// std::cout << "Bounding box limits end:" << std::endl;
+		std::cout << "|---- Bounding box limits:" << std::endl;
+		std::cout << "|---- " << this->node_bounding_box.min.x << " " << this->node_bounding_box.min.y << " " << this->node_bounding_box.min.z << std::endl;
+	std::cout << "|---- " << this->node_bounding_box.max.x << " " << this->node_bounding_box.max.y << " " << this->node_bounding_box.max.z << std::endl;
+		std::cout << "|----" << "Bounding box limits end:" << std::endl;
         return;
     }
     else{
@@ -180,8 +181,11 @@ Interaction BVH_Node::rayIntersect(Ray ray){
     bvhi_final.didIntersect = 0;
 
     if (this->node_bounding_box.rayIntersect(ray).didIntersect == 0) {
+		if(ray.x == 800 && ray.y == 540){
+			std::cout << "Case 5" << std::endl;
+		}
         // No intersection with the bounding box, return the default value
-        // std::cout << "No bounding box intersection." << std::endl;
+		// std::cout << "No bounding box intersection." << std::endl;
 
 		// std::cout << "Bounding box limits:" << std::endl;
 		// std::cout << this->node_bounding_box.min.x << " " << this->node_bounding_box.min.y << " " << this->node_bounding_box.min.z << std::endl;
@@ -196,18 +200,27 @@ Interaction BVH_Node::rayIntersect(Ray ray){
     }
 
     if (this->is_leaf_node == 1) {
+		if(ray.x == 800 && ray.y == 540){
+			std::cout << "Case 6" << std::endl;
+		}
         // If it's a leaf node, directly compute the intersection with the surface
         Interaction si = this->surfaces_inside[0]->rayIntersect(ray);
         // std::cout << "Leaf node intersection. Surface index: " << this->index << ", t: " << si.t << std::endl;
         return si;
     }
     else {
+		if(ray.x == 800 && ray.y == 540){
+			std::cout << "This is the target ray" << std::endl;
+		}
         // Recursive intersection with both left and right nodes
         Interaction left_intersection = this->left_node->rayIntersect(ray);
         Interaction right_intersection = this->right_node->rayIntersect(ray);
 
         // Check which intersection is closer
         if (left_intersection.didIntersect && right_intersection.didIntersect) {
+			if(ray.x == 800 && ray.y == 540){
+				std::cout << "Case 1" << std::endl;
+			}
             float left_distance = left_intersection.t;
             float right_distance = right_intersection.t;
 
@@ -220,19 +233,27 @@ Interaction BVH_Node::rayIntersect(Ray ray){
                 // std::cout << "Right ---" << std::endl;
             }
         } else if (left_intersection.didIntersect) {
+			if(ray.x == 800 && ray.y == 540){
+				std::cout << "Case 2" << std::endl;
+			}
             bvhi_final = left_intersection;
             // std::cout << "Left ---" << std::endl;
         } else if (right_intersection.didIntersect) {
+			if(ray.x == 800 && ray.y == 540){
+				std::cout << "Case 3" << std::endl;
+			}
             bvhi_final = right_intersection;
             // std::cout << "Right ---" << std::endl;
         }
+		if(ray.x == 800 && ray.y == 540){
+			std::cout << "Case 4" << std::endl;
+		}
     }
 
     // std::cout << "Final intersection result: " << bvhi_final.didIntersect << ", t: " << bvhi_final.t << std::endl;
 
     return bvhi_final;
 }
-
 
 
 // Interaction BVH_Node::rayIntersect(Ray ray){

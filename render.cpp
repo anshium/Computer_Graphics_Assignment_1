@@ -15,8 +15,10 @@ long long Integrator::render()
     for (int x = 0; x < this->scene.imageResolution.x; x++) {
         for (int y = 0; y < this->scene.imageResolution.y; y++) {
             Ray cameraRay = this->scene.camera.generateRay(x, y);
+            cameraRay.x = x;
+            cameraRay.y = y;
             Interaction si = this->scene.rayIntersect(cameraRay);
-            if(x == 960 && y == 540){
+            if(x == 800 && y == 540){
                 std::cout << "This is the center point" << std::endl;
                 if(si.didIntersect){
                     std::cout << "RAY INTERSECTED" << std::endl;
@@ -66,11 +68,17 @@ int main(int argc, char **argv)
 
     BVH_Node* bvh_root = new BVH_Node();
 
-    for (auto& surface : scene.surfaces) {
-        surface.updateBoundingBox(); // Target 1
+    // for (auto& surface : scene.surfaces) {
+    //     surface.updateBoundingBox(); // Target 1
+    // }
+    for(int i = 0; i < scene.surfaces.size(); i++){
+        (&scene.surfaces[i])->updateBoundingBox();
     }
 
     if(option == 2){
+        // for (auto& surface : scene.surfaces) {
+        //     surface.updateBoundingBox(); // Target 1
+        // }
         bvh_root->createBVH(&scene);
         scene.bvh_root = bvh_root;
 

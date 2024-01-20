@@ -84,9 +84,10 @@ void Scene::parse(std::string sceneDirectory, nlohmann::json sceneConfig)
             this->surfaces.insert(this->surfaces.end(), surf.begin(), surf.end());
 
             // Adding the bounding boxes to the surfaces. Don't know if parse is the right place to add it in accordance to SE rules.
-            for(Surface surface : this->surfaces){
-                surface.updateBoundingBox();
-            }
+            // I don't think I need this already. The surface is a temporary variable, so a dangling type thing might occur.
+            // for(Surface surface : this->surfaces){
+            //     surface.updateBoundingBox();
+            // }
 
             surfaceIdx = surfaceIdx + surf.size();
             i++; 
@@ -104,6 +105,7 @@ Interaction Scene::rayIntersect(Ray& ray)
     Interaction siFinal;
 
     siFinal.didIntersect = 1;
+
     if(option == 0 || option == 1){
         for (auto& surface : this->surfaces) {
             surface.updateBoundingBox(); // Target 1
@@ -112,6 +114,16 @@ Interaction Scene::rayIntersect(Ray& ray)
                 siFinal = si;
                 ray.t = si.t;
             }
+        }
+        if(ray.x == 800 && ray.y == 540){
+            // std::cout << "======================Printing available surfaces information     ======================" << std::endl;
+            // for(auto& surface : this->surfaces){
+            //     std::cout << surface.bounding_box.min.x << " " << surface.bounding_box.min.y << " " << surface.bounding_box.min.z << std::endl;
+            //     std::cout << surface.bounding_box.max.x << " " << surface.bounding_box.max.y << " " << surface.bounding_box.max.z << std::endl;
+
+            //     std::cout << "------------------------" << std::endl;
+            // }
+            // std::cout << "======================Printing available surfaces information ends======================" << std::endl;
         }
     }
 
@@ -122,6 +134,17 @@ Interaction Scene::rayIntersect(Ray& ray)
         if (si.t <= ray.t) {    
             siFinal = si;
             ray.t = si.t;
+        }
+
+        if(ray.x == 800 && ray.y == 540){
+            // std::cout << "======================Printing available surfaces information     ======================" << std::endl;
+            // for(auto& surface : this->bvh_root->surfaces_inside){
+            //     std::cout << surface->bounding_box.min.x << " " << surface->bounding_box.min.y << " " << surface->bounding_box.min.z << std::endl;
+            //     std::cout << surface->bounding_box.max.x << " " << surface->bounding_box.max.y << " " << surface->bounding_box.max.z << std::endl;
+
+            //     std::cout << "------------------------" << std::endl;
+            // }
+            // std::cout << "======================Printing available surfaces information ends======================" << std::endl;
         }
     }
 
