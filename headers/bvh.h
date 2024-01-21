@@ -27,5 +27,7 @@ struct BVH_Node {
 	void reallyCreateBVH_ForEachSurface(Surface* surface);
 	Interaction rayIntersect_ForEachSurface(Ray ray, Surface* surface);
 
+	void printSubBVHInformation(Surface* surface, int level);
+
 	// void updateSurfacesForBVH_Node(Scene* scene_ptr);	// Adding this function to ensure that the surfaces are being correctly filled.
 };

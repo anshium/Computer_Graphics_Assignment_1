@@ -149,9 +149,9 @@ Interaction Scene::rayIntersect(Ray& ray)
     }
 
     if(option == 3){
-            std::cout << "Here :|| " << __LINE__ << std::endl;
+            // std::cout << "Here :|| " << __LINE__ << std::endl;
         Interaction si = this->bvh_root->rayIntersect(ray);
-            std::cout << "Here :|| " << __LINE__ << std::endl;
+            // std::cout << "Here :|| " << __LINE__ << std::endl;
         if (si.t <= ray.t) {    
             siFinal = si;
             ray.t = si.t;

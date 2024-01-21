@@ -109,6 +109,9 @@ int main(int argc, char **argv)
                 surface_ptr->triangles_ki_bbiyaan.push_back(tempBB);
             }
             surface_ptr->bvh_node->createBVH_ForEachSurface(surface_ptr);
+
+            surface_ptr->bvh_node->printSubBVHInformation(surface_ptr, 0);
+            std::cout << "+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+" << std::endl;
         }
         std::cout << "Reached here" << std::endl;
         // scene.bvh_root->printBVH_Information(0);
