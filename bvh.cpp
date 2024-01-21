@@ -150,7 +150,7 @@ void BVH_Node::reallyCreateBVH(){
 			added_to_right += 1;
 		
 		}
-	}// Hehe std::cout << "Here :|'> " << __LINE__ << std::endl;
+	}
 
 	// // Hehe std::cout << "Added to left: " << added_to_left << std::endl;
 	// // Hehe std::cout << "Added to right: " << added_to_right << std::endl;
@@ -205,7 +205,7 @@ Interaction BVH_Node::rayIntersect(Ray ray){
 		if(ray.x == 800 && ray.y == 540){
 			// Hehe std::cout << "Case 5" << std::endl;
 		}
-		// // Hehe std::cout << "Here :|> " << __LINE__ << std::endl;
+		// 
         // No intersection with the bounding box, return the default value
 		// // Hehe std::cout << "No bounding box intersection." << std::endl;
 
@@ -222,7 +222,7 @@ Interaction BVH_Node::rayIntersect(Ray ray){
     }
 
     if (this->is_leaf_node == 1) {
-		// Hehe std::cout << "Here :|> " << __LINE__ << std::endl;
+		
 		if(ray.x == 800 && ray.y == 540){
 			// Hehe std::cout << "Case 6" << std::endl;
 		}
@@ -234,9 +234,9 @@ Interaction BVH_Node::rayIntersect(Ray ray){
 
 		// If the option is 3, there should be a BVH ready for each surface as well, go inside it.
 		if(option == 3){
-		// Hehe std::cout << "Here :|> " << __LINE__ << std::endl;
+		
 			si = this->surfaces_inside[0]->bvh_node->rayIntersect_ForEachSurface(ray, this->surfaces_inside[0]);
-		// Hehe std::cout << "Here :|> " << __LINE__ << std::endl;
+		
 		}
 
         // // Hehe std::cout << "Leaf node intersection. Surface index: " << this->index << ", t: " << si.t << std::endl;
@@ -261,23 +261,23 @@ Interaction BVH_Node::rayIntersect(Ray ray){
             // Choose the closer intersection
             if (left_distance < right_distance) {
                 bvhi_final = left_intersection;
-                // // Hehe std::cout << "Left ---" << std::endl;
+                
             } else {
                 bvhi_final = right_intersection;
-                // // Hehe std::cout << "Right ---" << std::endl;
+                
             }
         } else if (left_intersection.didIntersect) {
 			if(ray.x == 800 && ray.y == 540){
 				// Hehe std::cout << "Case 2" << std::endl;
 			}
             bvhi_final = left_intersection;
-            // // Hehe std::cout << "Left ---" << std::endl;
+            
         } else if (right_intersection.didIntersect) {
 			if(ray.x == 800 && ray.y == 540){
 				// Hehe std::cout << "Case 3" << std::endl;
 			}
             bvhi_final = right_intersection;
-            // // Hehe std::cout << "Right ---" << std::endl;
+            
         }
 		if(ray.x == 800 && ray.y == 540){
 			// Hehe std::cout << "Case 4" << std::endl;
@@ -440,32 +440,32 @@ Interaction BVH_Node::rayIntersect_ForEachSurface(Ray ray, Surface* surface){
     Interaction bvhi;
     bvhi_final.didIntersect = 0;
 	float tmin = 1e30;
-			// Hehe std::cout << "Here :|'> " << __LINE__ << std::endl;
+			
     if (this->node_bounding_box.rayIntersect(ray).didIntersect == 0) {
-			// Hehe std::cout << "Here :|'> " << __LINE__ << std::endl;
+			
         return bvhi_final;
     }
 
     if (this->is_leaf_node == 1) {
-			// Hehe std::cout << "Here :|'> " << __LINE__ << std::endl;
+			
         // If it's a leaf node, directly compute the intersection with the surface
 			// Hehe std::cout << this->faces_inside.size() << std::endl;
-			// Hehe std::cout << "Here :|'> " << __LINE__ << std::endl;
+			
        	Vector3f p1 = surface->vertices[this->faces_inside[0].x];
 		Vector3f p2 = surface->vertices[this->faces_inside[0].y];
 		Vector3f p3 = surface->vertices[this->faces_inside[0].z];
 
-			// Hehe std::cout << "Here :|'> " << __LINE__ << std::endl;
+			
 		Vector3f n1 = surface->normals[this->faces_inside[0].x];
 		Vector3f n2 = surface->normals[this->faces_inside[0].y];
 		Vector3f n3 = surface->normals[this->faces_inside[0].z];
 		Vector3f n = Normalize(n1 + n2 + n3);
-			// Hehe std::cout << "Here :|'> " << __LINE__ << std::endl;
+			
 
 		Interaction si = surface->rayTriangleIntersect(ray, p1, p2, p3, n);
-			// Hehe std::cout << "Here :|'> " << __LINE__ << std::endl;
+			
 		if (si.t <= tmin && si.didIntersect) {
-			// Hehe std::cout << "Here :|'> " << __LINE__ << std::endl;
+			
 			bvhi_final = si;
 			tmin = si.t;            // But what are we getting if we have this tmin? It is anyway not being used aftwewards
 		}
@@ -473,18 +473,18 @@ Interaction BVH_Node::rayIntersect_ForEachSurface(Ray ray, Surface* surface){
 		return bvhi_final;
     }
     else {
-			// Hehe std::cout << "Here :|'> " << __LINE__ << std::endl;
+			
         // Recursive intersection with both left and right nodes
         Interaction left_intersection = this->left_node->rayIntersect_ForEachSurface(ray, surface);
-			// Hehe std::cout << "Here :|'> " << __LINE__ << std::endl;
+			
         Interaction right_intersection = this->right_node->rayIntersect_ForEachSurface(ray, surface);
-			// Hehe std::cout << "Here :|'> " << __LINE__ << std::endl;
+			
 
         // Check which intersection is closer
         if (left_intersection.didIntersect && right_intersection.didIntersect) {
             float left_distance = left_intersection.t;
             float right_distance = right_intersection.t;
-			// Hehe std::cout << "Here :|'> " << __LINE__ << std::endl;
+			
 
             // Choose the closer intersection
             if (left_distance < right_distance) {
@@ -493,14 +493,14 @@ Interaction BVH_Node::rayIntersect_ForEachSurface(Ray ray, Surface* surface){
                 bvhi_final = right_intersection;
             }
         } else if (left_intersection.didIntersect) {
-			// Hehe std::cout << "Here :|'> " << __LINE__ << std::endl;
+			
             bvhi_final = left_intersection;
         } else if (right_intersection.didIntersect) {
-			// Hehe std::cout << "Here :|'> " << __LINE__ << std::endl;
+			
             bvhi_final = right_intersection;
         }
     }
-			// Hehe std::cout << "Here :|'> " << __LINE__ << std::endl;
+			
 
     return bvhi_final;
 }
