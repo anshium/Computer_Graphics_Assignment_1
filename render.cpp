@@ -76,6 +76,7 @@ int main(int argc, char **argv)
         (&scene.surfaces[i])->updateBoundingBox();
     }
 
+    /**
     int i = 0;
     for(auto& surface : scene.surfaces){
         std::cout << "Surface Information, surface: " << i + 1 << std::endl;
@@ -87,6 +88,8 @@ int main(int argc, char **argv)
         std::cout << "Surface Information ends:" << std::endl;
         i++;
     }
+    **/
+
     if(option == 2){
         bvh_root->createBVH(&scene);
         scene.bvh_root = bvh_root;
@@ -101,13 +104,14 @@ int main(int argc, char **argv)
         for(int i = 0; i < scene.surfaces.size(); i++){
             Surface* surface_ptr = &scene.surfaces[i];
             surface_ptr->bvh_node = new BVH_Node();
+            for(auto& face : surface_ptr->indices){
+                BoundingBox* tempBB = new BoundingBox();                    // Target
+                surface_ptr->triangles_ki_bbiyaan.push_back(tempBB);
+            }
             surface_ptr->bvh_node->createBVH_ForEachSurface(surface_ptr);
         }
         std::cout << "Reached here" << std::endl;
     }
-
-    
-    
     
     Integrator rayTracer(scene);
     auto renderTime = rayTracer.render();

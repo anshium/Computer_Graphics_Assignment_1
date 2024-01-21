@@ -320,7 +320,7 @@ void BVH_Node::reallyCreateBVH_ForEachSurface(Surface* surface){
 		// Calculate the centroid of the triangle along the chosen axis			// Target
 		// Either that or simply find the center of their wives. Going with the latter for now.
 		
-		float center_of_bb = (surface->triangles_ki_bbiyaan[i].min[axis] + surface->triangles_ki_bbiyaan[i].max[axis]) / 2;
+		float center_of_bb = (surface->triangles_ki_bbiyaan[i]->min[axis] + surface->triangles_ki_bbiyaan[i]->max[axis]) / 2;
 		if(center_of_bb < min_value){
 			min_value = center_of_bb;
 		}
@@ -340,7 +340,7 @@ void BVH_Node::reallyCreateBVH_ForEachSurface(Surface* surface){
 	int added_to_right = 0;
 
 	for(int i = 0; i < this->faces_inside.size(); i++){
-		double bounding_box_center = (surface->triangles_ki_bbiyaan[i].min[axis] + surface->triangles_ki_bbiyaan[i].max[axis]) / 2;
+		double bounding_box_center = (surface->triangles_ki_bbiyaan[i]->min[axis] + surface->triangles_ki_bbiyaan[i]->max[axis]) / 2;
 
 		if(bounding_box_center < splitting_position){
 			this->left_node->faces_inside.push_back(this->faces_inside[i]);
