@@ -302,3 +302,17 @@ void Surface::updateBoundingBox() {
         this->bounding_box.update(vertex);
     }
 }
+
+// By marriage we mean creating a bounding box for each triangle that would surround the triangle all the time.
+void Surface::marryTrianglesWithBoundingBoxes(){
+    for(int i = 0; i < this->indices.size(); i++){
+        Vector3i vertex_indices = this->indices[i];
+        this->triangles_ki_bbiyaan[i].min = this->triangles_ki_bbiyaan[i].max = vertices[vertex_indices[0]];
+        this->triangles_ki_bbiyaan[i].update(vertices[vertex_indices[1]]);
+        this->triangles_ki_bbiyaan[i].update(vertices[vertex_indices[2]]);
+    }
+
+    std::cout << "The marriages are complete <3" << std::endl;
+
+    return;
+}

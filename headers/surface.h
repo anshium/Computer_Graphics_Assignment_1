@@ -9,6 +9,9 @@ struct Surface {
     std::vector<Vector3i> indices;
     std::vector<Vector2f> uvs;
 
+    std::vector<BoundingBox> triangles_ki_bbiyaan;   // I don't know if that is a misnomer. The bbiyaan would also keep the vertices captured. The length of the vector would be the number of indices = number of vertice / 3.
+    BVH_Node* bvh_node;     // This is the BVH_Node for the the surface-triangles BVH.
+
     BoundingBox bounding_box;
 
     bool isLight;
@@ -24,6 +27,8 @@ struct Surface {
     Interaction rayIntersect(Ray ray);
 
     void updateBoundingBox();
+    
+    void marryTrianglesWithBoundingBoxes();
 
 private:
     bool hasDiffuseTexture();

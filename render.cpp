@@ -63,41 +63,48 @@ int main(int argc, char **argv)
         option = 2;
         std::cout << "Using PART_2" << std::endl;
     }
-
+    else if(std::stoi(argv[3]) == 3){
+        option = 3;
+        std::cout << "Using PART_3" << std::endl;
+    }
+    
     Scene scene(argv[1]);
 
     BVH_Node* bvh_root = new BVH_Node();
 
-    // for (auto& surface : scene.surfaces) {
-    //     surface.updateBoundingBox(); // Target 1
-    // }
     for(int i = 0; i < scene.surfaces.size(); i++){
         (&scene.surfaces[i])->updateBoundingBox();
     }
 
     if(option == 2){
-        // for (auto& surface : scene.surfaces) {
-        //     surface.updateBoundingBox(); // Target 1
-        // }
+        bvh_root->createBVH(&scene);
+        scene.bvh_root = bvh_root;
+    }
+    
+    if(option == 3){
         bvh_root->createBVH(&scene);
         scene.bvh_root = bvh_root;
 
-    //     std::cout << "Bounding box limits:" << std::endl;
-	// 	std::cout << bvh_root->node_bounding_box.min.x << " " << bvh_root->node_bounding_box.min.y << " " << bvh_root->node_bounding_box.min.z << std::endl;
-	// std::cout << bvh_root->node_bounding_box.max.x << " " << bvh_root->node_bounding_box.max.y << " " << bvh_root->node_bounding_box.max.z << std::endl;
-	// 	std::cout << "Bounding box limits end:" << std::endl;
+        for(int i = 0; i < scene.surfaces.size(); i++){
+            Surface* surface_ptr = &scene.surfaces[i];
+            surface_ptr->bvh_node->createBVH_ForEachSurface(surface_ptr);
+        }
     }
-    // std::cout << scene.surfaces.size() << std::endl;
 
+    /**
     int i = 0;
     for(auto& surface : scene.surfaces){
         std::cout << "Surface Information, surface: " << i + 1 << std::endl;
-        for(int j = 0; i < surface.indices.size(); i++){
-            std::cout << surface.indices[i].x << " " << surface.indices[i].y << " " << surface.indices[i].z << std::endl;
-        }
+        // for(int j = 0; i < surface.indices.size(); i++){
+        //     std::cout << surface.indices[i].x << " " << surface.indices[i].y << " " << surface.indices[i].z << std::endl;
+        // }
+        std::cout << "Number of vertices: " << surface.vertices.size() << std::endl;
+        std::cout << "Number of Indices: " << surface.indices.size() << std::endl;
         std::cout << "Surface Information ends:" << std::endl;
         i++;
     }
+    **/
+    
     Integrator rayTracer(scene);
     auto renderTime = rayTracer.render();
 

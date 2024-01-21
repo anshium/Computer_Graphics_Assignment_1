@@ -148,5 +148,13 @@ Interaction Scene::rayIntersect(Ray& ray)
         }
     }
 
+    if(option == 3){
+        Interaction si = this->bvh_root->rayIntersect(ray);
+        if (si.t <= ray.t) {    
+            siFinal = si;
+            ray.t = si.t;
+        }
+    }
+
     return siFinal;
 }
