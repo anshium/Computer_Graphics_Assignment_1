@@ -111,6 +111,7 @@ int main(int argc, char **argv)
             surface_ptr->bvh_node->createBVH_ForEachSurface(surface_ptr);
         }
         std::cout << "Reached here" << std::endl;
+        // scene.bvh_root->printBVH_Information(0);
     }
     
     Integrator rayTracer(scene);
