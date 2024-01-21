@@ -4,3 +4,5 @@ build/*
 # Log files #
 ######################
 output.txt
+output1.txt
+output2.txt

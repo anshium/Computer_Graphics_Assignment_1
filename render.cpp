@@ -82,13 +82,22 @@ int main(int argc, char **argv)
         bvh_root->createBVH(&scene);
         scene.bvh_root = bvh_root;
 
-        std::cout << "Bounding box limits:" << std::endl;
-		std::cout << bvh_root->node_bounding_box.min.x << " " << bvh_root->node_bounding_box.min.y << " " << bvh_root->node_bounding_box.min.z << std::endl;
-	std::cout << bvh_root->node_bounding_box.max.x << " " << bvh_root->node_bounding_box.max.y << " " << bvh_root->node_bounding_box.max.z << std::endl;
-		std::cout << "Bounding box limits end:" << std::endl;
+    //     std::cout << "Bounding box limits:" << std::endl;
+	// 	std::cout << bvh_root->node_bounding_box.min.x << " " << bvh_root->node_bounding_box.min.y << " " << bvh_root->node_bounding_box.min.z << std::endl;
+	// std::cout << bvh_root->node_bounding_box.max.x << " " << bvh_root->node_bounding_box.max.y << " " << bvh_root->node_bounding_box.max.z << std::endl;
+	// 	std::cout << "Bounding box limits end:" << std::endl;
     }
     // std::cout << scene.surfaces.size() << std::endl;
 
+    int i = 0;
+    for(auto& surface : scene.surfaces){
+        std::cout << "Surface Information, surface: " << i + 1 << std::endl;
+        for(int j = 0; i < surface.indices.size(); i++){
+            std::cout << surface.indices[i].x << " " << surface.indices[i].y << " " << surface.indices[i].z << std::endl;
+        }
+        std::cout << "Surface Information ends:" << std::endl;
+        i++;
+    }
     Integrator rayTracer(scene);
     auto renderTime = rayTracer.render();
 
