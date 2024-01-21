@@ -10,26 +10,26 @@
 // Then when we would reach the end of the recursion at the base case, we would make the is_leaf_node value to be one and the rest of them would have value zero.
 
 void BVH_Node::createBVH(Scene* scene){
-	// // Hehe std::cout << "Surface First Information -------------------------------------" << std::endl;
-	// Hehe std::cout << "Here 1" << std::endl;
+	// // Hehe // Hehe std::cout << "Surface First Information -------------------------------------" << std::endl;
+	// Hehe // Hehe std::cout << "Here 1" << std::endl;
 	for(int i = 0; i < scene->surfaces.size(); i++){
 		scene->surfaces[i].updateBoundingBox();
-		// // Hehe std::cout << "Min " << 
+		// // Hehe // Hehe std::cout << "Min " << 
 					// scene->surfaces[i].bounding_box.min.x << " " << 
 					// scene->surfaces[i].bounding_box.min.y << " " << 
 					// scene->surfaces[i].bounding_box.min.z << std::endl;
-		// // Hehe std::cout << "Max " << 
+		// // Hehe // Hehe std::cout << "Max " << 
 					// scene->surfaces[i].bounding_box.max.x << " " << 
 					// scene->surfaces[i].bounding_box.max.y << " " << 
 					// scene->surfaces[i].bounding_box.max.z << std::endl;
 		this->surfaces_inside.push_back(&scene->surfaces[i]);		// Dunno if &surface would work. It didn't and wouldn't (dangling pointer)	
 	}
 
-	// Hehe std::cout << "Here 2" << std::endl;
-	// // Hehe std::cout << "Surface First Information Ends -------------------------------------" << std::endl;
+	// Hehe // Hehe std::cout << "Here 2" << std::endl;
+	// // Hehe // Hehe std::cout << "Surface First Information Ends -------------------------------------" << std::endl;
 	this->reallyCreateBVH();
 	
-	// // Hehe std::cout << "Added surfaces to main BVH" << std::endl;
+	// // Hehe // Hehe std::cout << "Added surfaces to main BVH" << std::endl;
 	return;
 }
 
@@ -65,10 +65,10 @@ void BVH_Node::reallyCreateBVH(){
 	Vector3d range = this->node_bounding_box.max - this->node_bounding_box.min;
 
 	
-	// // Hehe std::cout << "+-+-+-Node Bounding Box Information: -+-+-+" << std::endl;
-	// // Hehe std::cout << this->node_bounding_box.min.x << " " << this->node_bounding_box.min.y << " " << this->node_bounding_box.min.z << std::endl;
-	// // Hehe std::cout << this->node_bounding_box.max.x << " " << this->node_bounding_box.max.y << " " << this->node_bounding_box.max.z << std::endl;
-	// // Hehe std::cout << "+-+-+-Node Bounding Box Information Ends: -+-+-+	" << std::endl;
+	// // Hehe // Hehe std::cout << "+-+-+-Node Bounding Box Information: -+-+-+" << std::endl;
+	// // Hehe // Hehe std::cout << this->node_bounding_box.min.x << " " << this->node_bounding_box.min.y << " " << this->node_bounding_box.min.z << std::endl;
+	// // Hehe // Hehe std::cout << this->node_bounding_box.max.x << " " << this->node_bounding_box.max.y << " " << this->node_bounding_box.max.z << std::endl;
+	// // Hehe // Hehe std::cout << "+-+-+-Node Bounding Box Information Ends: -+-+-+	" << std::endl;
 
 	
 	int axis = 0;							// by default the x-axis
@@ -104,29 +104,29 @@ void BVH_Node::reallyCreateBVH(){
 	int added_to_right = 0;
 
 	for(Surface* surface_ptr : this->surfaces_inside){
-		// // Hehe std::cout << "Min " << surface_ptr->bounding_box.min.x << " " << surface_ptr->bounding_box.min.y << " " << surface_ptr->bounding_box.min.z << std::endl;
-		// // Hehe std::cout << "Max " << surface_ptr->bounding_box.max.x << " " << surface_ptr->bounding_box.max.y << " " << surface_ptr->bounding_box.max.z << std::endl;
+		// // Hehe // Hehe std::cout << "Min " << surface_ptr->bounding_box.min.x << " " << surface_ptr->bounding_box.min.y << " " << surface_ptr->bounding_box.min.z << std::endl;
+		// // Hehe // Hehe std::cout << "Max " << surface_ptr->bounding_box.max.x << " " << surface_ptr->bounding_box.max.y << " " << surface_ptr->bounding_box.max.z << std::endl;
 	}
 	
 	
-	// // Hehe std::cout << "Chosen Axis: " << axis << std::endl;
-	// // Hehe std::cout << "Spliiting Position: " << splitting_position << std::endl;
+	// // Hehe // Hehe std::cout << "Chosen Axis: " << axis << std::endl;
+	// // Hehe // Hehe std::cout << "Spliiting Position: " << splitting_position << std::endl;
 
 	for(Surface* surface_ptr : this->surfaces_inside){
-		// // Hehe std::cout << "Surface Information -------------------------------------" << std::endl;
-		// Hehe std::cout << surface_ptr->bounding_box.min[axis] << " " << surface_ptr->bounding_box.max[axis] << std::endl;
-		// Hehe std::cout << splitting_position << std::endl;
-		// // Hehe std::cout << "Surface Information Ends-------------------------------------" << std::endl;
+		// // Hehe // Hehe std::cout << "Surface Information -------------------------------------" << std::endl;
+		// Hehe // Hehe std::cout << surface_ptr->bounding_box.min[axis] << " " << surface_ptr->bounding_box.max[axis] << std::endl;
+		// Hehe // Hehe std::cout << splitting_position << std::endl;
+		// // Hehe // Hehe std::cout << "Surface Information Ends-------------------------------------" << std::endl;
 
 		double bounding_box_center = (surface_ptr->bounding_box.max[axis] + surface_ptr->bounding_box.min[axis]) / 2;
-		// // Hehe std::cout << "Bounding Box Center: " << bounding_box_center<< std::endl;
+		// // Hehe // Hehe std::cout << "Bounding Box Center: " << bounding_box_center<< std::endl;
 	
 
 		if(bounding_box_center < splitting_position){
 			this->left_node->surfaces_inside.push_back(surface_ptr);
 			this->is_leaf_node = 0;
 
-			// // Hehe std::cout << "Put to Left" << std::endl;
+			// // Hehe // Hehe std::cout << "Put to Left" << std::endl;
 
 			added_to_left += 1;
 		
@@ -136,7 +136,7 @@ void BVH_Node::reallyCreateBVH(){
 			this->left_node->surfaces_inside.push_back(surface_ptr);
 			this->is_leaf_node = 0;
 
-			// // Hehe std::cout << "Put to Left" << std::endl;
+			// // Hehe // Hehe std::cout << "Put to Left" << std::endl;
 
 			added_to_left += 1;
 		
@@ -145,51 +145,51 @@ void BVH_Node::reallyCreateBVH(){
 			this->right_node->surfaces_inside.push_back(surface_ptr);
 			this->is_leaf_node = 0;
 
-			// // Hehe std::cout << "Put to Right" << std::endl;
+			// // Hehe // Hehe std::cout << "Put to Right" << std::endl;
 			
 			added_to_right += 1;
 		
 		}
 	}
 
-	// // Hehe std::cout << "Added to left: " << added_to_left << std::endl;
-	// // Hehe std::cout << "Added to right: " << added_to_right << std::endl;
+	// // Hehe // Hehe std::cout << "Added to left: " << added_to_left << std::endl;
+	// // Hehe // Hehe std::cout << "Added to right: " << added_to_right << std::endl;
 
-	// // Hehe std::cout << "Called Recursion on left" << std::endl;
+	// // Hehe // Hehe std::cout << "Called Recursion on left" << std::endl;
 		
 	this->left_node->reallyCreateBVH();
 		
-	// // Hehe std::cout << "Called Recursion on right" << std::endl;
+	// // Hehe // Hehe std::cout << "Called Recursion on right" << std::endl;
 	this->right_node->reallyCreateBVH();
 		
 
 
-	// // Hehe std::cout << "Exiting reallyCreateBVH" << std::endl;
+	// // Hehe // Hehe std::cout << "Exiting reallyCreateBVH" << std::endl;
 }
 
 void BVH_Node::printBVH_Information(int level){
 	if(level == 0){
-		// Hehe std::cout << "Level 0 has " << this->surfaces_inside.size() << " surfaces." << std::endl;
+		// Hehe // Hehe std::cout << "Level 0 has " << this->surfaces_inside.size() << " surfaces." << std::endl;
 	}
 	static int index_assignment = 1;
     if (this->surfaces_inside.size() == 0){
-        // // Hehe std::cout << "This is a leaf node 0" << std::endl;
+        // // Hehe // Hehe std::cout << "This is a leaf node 0" << std::endl;
         return;
     }
 	if (this->surfaces_inside.size() == 1){
 		this->index = index_assignment++;
-        // Hehe std::cout << "This is a leaf node 1, has index: " << this->index << "." << std::endl;
-		// Hehe std::cout << "|---- Bounding box limits:" << std::endl;
-		// Hehe std::cout << "|---- " << this->node_bounding_box.min.x << " " << this->node_bounding_box.min.y << " " << this->node_bounding_box.min.z << std::endl;
-	// Hehe std::cout << "|---- " << this->node_bounding_box.max.x << " " << this->node_bounding_box.max.y << " " << this->node_bounding_box.max.z << std::endl;
-		// Hehe std::cout << "|----" << "Bounding box limits end:" << std::endl;
+        // Hehe // Hehe std::cout << "This is a leaf node 1, has index: " << this->index << "." << std::endl;
+		// Hehe // Hehe std::cout << "|---- Bounding box limits:" << std::endl;
+		// Hehe // Hehe std::cout << "|---- " << this->node_bounding_box.min.x << " " << this->node_bounding_box.min.y << " " << this->node_bounding_box.min.z << std::endl;
+	// Hehe // Hehe std::cout << "|---- " << this->node_bounding_box.max.x << " " << this->node_bounding_box.max.y << " " << this->node_bounding_box.max.z << std::endl;
+		// Hehe // Hehe std::cout << "|----" << "Bounding box limits end:" << std::endl;
         return;
     }
     else{
-        // Hehe std::cout << "Printing information of left to level: " << level << ", has surfaces: " << this->left_node->surfaces_inside.size() << std::endl;
+        // Hehe // Hehe std::cout << "Printing information of left to level: " << level << ", has surfaces: " << this->left_node->surfaces_inside.size() << std::endl;
 		if(this->left_node) this->left_node->printBVH_Information(level + 1);
 
-        // Hehe std::cout << "Printing information of right to level: " << level << ", has surfaces: " << this->right_node->surfaces_inside.size() << std::endl;
+        // Hehe // Hehe std::cout << "Printing information of right to level: " << level << ", has surfaces: " << this->right_node->surfaces_inside.size() << std::endl;
 		if(this->right_node) this->right_node->printBVH_Information(level + 1);
     }
     return;
@@ -203,20 +203,20 @@ Interaction BVH_Node::rayIntersect(Ray ray){
 
     if (this->node_bounding_box.rayIntersect(ray).didIntersect == 0) {
 		if(ray.x == 800 && ray.y == 540){
-			// Hehe std::cout << "Case 5" << std::endl;
+			// Hehe // Hehe std::cout << "Case 5" << std::endl;
 		}
 		// 
         // No intersection with the bounding box, return the default value
-		// // Hehe std::cout << "No bounding box intersection." << std::endl;
+		// // Hehe // Hehe std::cout << "No bounding box intersection." << std::endl;
 
-		// // Hehe std::cout << "Bounding box limits:" << std::endl;
-		// // Hehe std::cout << this->node_bounding_box.min.x << " " << this->node_bounding_box.min.y << " " << this->node_bounding_box.min.z << std::endl;
-	// // Hehe std::cout << this->node_bounding_box.max.x << " " << this->node_bounding_box.max.y << " " << this->node_bounding_box.max.z << std::endl;
-		// // Hehe std::cout << "Bounding box limits end:" << std::endl;
+		// // Hehe // Hehe std::cout << "Bounding box limits:" << std::endl;
+		// // Hehe // Hehe std::cout << this->node_bounding_box.min.x << " " << this->node_bounding_box.min.y << " " << this->node_bounding_box.min.z << std::endl;
+	// // Hehe // Hehe std::cout << this->node_bounding_box.max.x << " " << this->node_bounding_box.max.y << " " << this->node_bounding_box.max.z << std::endl;
+		// // Hehe // Hehe std::cout << "Bounding box limits end:" << std::endl;
 
-		// // Hehe std::cout << "Ray Information" << std::endl;
-		// // Hehe std::cout << "Direction " << ray.d.x << ", " << ray.d.y << ", " << ray.d.z << std::endl;
-		// // Hehe std::cout << "Direction " << ray.o.x << ", " << ray.o.y << ", " << ray.o.z << std::endl;
+		// // Hehe // Hehe std::cout << "Ray Information" << std::endl;
+		// // Hehe // Hehe std::cout << "Direction " << ray.d.x << ", " << ray.d.y << ", " << ray.d.z << std::endl;
+		// // Hehe // Hehe std::cout << "Direction " << ray.o.x << ", " << ray.o.y << ", " << ray.o.z << std::endl;
 
         return bvhi_final;
     }
@@ -224,7 +224,7 @@ Interaction BVH_Node::rayIntersect(Ray ray){
     if (this->is_leaf_node == 1) {
 		
 		if(ray.x == 800 && ray.y == 540){
-			// Hehe std::cout << "Case 6" << std::endl;
+			// Hehe // Hehe std::cout << "Case 6" << std::endl;
 		}
         // If it's a leaf node and option is 2, directly compute the intersection with the surface
 		Interaction si;
@@ -239,12 +239,12 @@ Interaction BVH_Node::rayIntersect(Ray ray){
 		
 		}
 
-        // // Hehe std::cout << "Leaf node intersection. Surface index: " << this->index << ", t: " << si.t << std::endl;
+        // // Hehe // Hehe std::cout << "Leaf node intersection. Surface index: " << this->index << ", t: " << si.t << std::endl;
         return si;
     }
     else {
 		if(ray.x == 800 && ray.y == 540){
-			// Hehe std::cout << "This is the target ray" << std::endl;
+			// Hehe // Hehe std::cout << "This is the target ray" << std::endl;
 		}
         // Recursive intersection with both left and right nodes
         Interaction left_intersection = this->left_node->rayIntersect(ray);
@@ -253,7 +253,7 @@ Interaction BVH_Node::rayIntersect(Ray ray){
         // Check which intersection is closer
         if (left_intersection.didIntersect && right_intersection.didIntersect) {
 			if(ray.x == 800 && ray.y == 540){
-				// Hehe std::cout << "Case 1" << std::endl;
+				// Hehe // Hehe std::cout << "Case 1" << std::endl;
 			}
             float left_distance = left_intersection.t;
             float right_distance = right_intersection.t;
@@ -268,23 +268,23 @@ Interaction BVH_Node::rayIntersect(Ray ray){
             }
         } else if (left_intersection.didIntersect) {
 			if(ray.x == 800 && ray.y == 540){
-				// Hehe std::cout << "Case 2" << std::endl;
+				// Hehe // Hehe std::cout << "Case 2" << std::endl;
 			}
             bvhi_final = left_intersection;
             
         } else if (right_intersection.didIntersect) {
 			if(ray.x == 800 && ray.y == 540){
-				// Hehe std::cout << "Case 3" << std::endl;
+				// Hehe // Hehe std::cout << "Case 3" << std::endl;
 			}
             bvhi_final = right_intersection;
             
         }
 		if(ray.x == 800 && ray.y == 540){
-			// Hehe std::cout << "Case 4" << std::endl;
+			// Hehe // Hehe std::cout << "Case 4" << std::endl;
 		}
     }
 
-    // // Hehe std::cout << "Final intersection result: " << bvhi_final.didIntersect << ", t: " << bvhi_final.t << std::endl;
+    // // Hehe // Hehe std::cout << "Final intersection result: " << bvhi_final.didIntersect << ", t: " << bvhi_final.t << std::endl;
 
     return bvhi_final;
 }
@@ -302,12 +302,13 @@ void BVH_Node::createBVH_ForEachSurface(Surface* surface){
 }
 
 void BVH_Node::reallyCreateBVH_ForEachSurface(Surface* surface){
-	
+	// // Hehe std::cout << "Here: " << __LINE__ << std::endl;
 	if(this->faces_inside.size() == 0){
 	
 		this->is_leaf_node = 1;
 		return;
 	}
+	// // Hehe std::cout << "Here: " << __LINE__ << std::endl;
 	
 
 	if(this->faces_inside.size() == 1){
@@ -322,6 +323,7 @@ void BVH_Node::reallyCreateBVH_ForEachSurface(Surface* surface){
 	
 		return;
 	}
+	// // Hehe std::cout << "Here: " << __LINE__ << std::endl;
 
 	
 	if(this->faces_inside.size() >= 2){
@@ -336,6 +338,7 @@ void BVH_Node::reallyCreateBVH_ForEachSurface(Surface* surface){
 	
 	}
 
+	// // Hehe std::cout << "Here: " << __LINE__ << std::endl;
 	
 	for(int i = 0; i < faces_inside.size(); i++){
 		BoundingBox* bbptr = new BoundingBox();
@@ -348,6 +351,7 @@ void BVH_Node::reallyCreateBVH_ForEachSurface(Surface* surface){
 		this->node_bounding_box.update(surface->vertices[faces_inside[i][2]]);
 	
 	}
+	// // Hehe std::cout << "Here: " << __LINE__ << std::endl;
 
 	Vector3d range = this->node_bounding_box.max - this->node_bounding_box.min;
 	
@@ -376,11 +380,12 @@ void BVH_Node::reallyCreateBVH_ForEachSurface(Surface* surface){
 		if(center_of_bb > max_value){
 			max_value = center_of_bb;
 		}
+	// // Hehe std::cout << "Here: " << __LINE__ << std::endl;
 	
 	}
 
 	double splitting_position = (min_value + max_value) / 2;
-	// Hehe std::cout << "Splitting Position: " << splitting_position << std::endl;
+	// Hehe // Hehe std::cout << "Splitting Position: " << splitting_position << std::endl;
 
 	
 	this->left_node = new BVH_Node();
@@ -390,6 +395,7 @@ void BVH_Node::reallyCreateBVH_ForEachSurface(Surface* surface){
 	int added_to_left = 0;
 	int added_to_right = 0;
 
+	// // Hehe std::cout << "Here: " << __LINE__ << std::endl;
 	
 	for(int i = 0; i < this->faces_inside.size(); i++){
 		double centroid = (
@@ -398,7 +404,7 @@ void BVH_Node::reallyCreateBVH_ForEachSurface(Surface* surface){
 			surface->vertices[faces_inside[i][2]][axis]
 		) / 3;
 	
-		// Hehe std::cout << "Centroid: " << centroid << ", Splitting position: " << splitting_position << ", Difference: " << std::abs(centroid - splitting_position) << std::endl;
+		// Hehe // Hehe std::cout << "Centroid: " << centroid << ", Splitting position: " << splitting_position << ", Difference: " << std::abs(centroid - splitting_position) << std::endl;
 
 		int a = std::abs(centroid - splitting_position) <= 0.00001;
 		// Hehe std::cout << "a: " << a << std::endl;
@@ -424,12 +430,16 @@ void BVH_Node::reallyCreateBVH_ForEachSurface(Surface* surface){
 			added_to_right += 1;
 		}
 	
+	// // Hehe std::cout << "Here: " << __LINE__ << std::endl;
 	}
 	// Hehe std::cout << "Added to Left: " << added_to_left << ", Added to Right: " << added_to_right << std::endl;
 	
+	// // Hehe std::cout << "Here: " << __LINE__ << std::endl;
 	this->left_node->reallyCreateBVH_ForEachSurface(surface);
+	// // Hehe std::cout << "Here: " << __LINE__ << std::endl;
 	
 	this->right_node->reallyCreateBVH_ForEachSurface(surface);
+	// // Hehe std::cout << "Here: " << __LINE__ << std::endl;
 	
 	return;
 }
@@ -449,7 +459,7 @@ Interaction BVH_Node::rayIntersect_ForEachSurface(Ray ray, Surface* surface){
     if (this->is_leaf_node == 1) {
 			
         // If it's a leaf node, directly compute the intersection with the surface
-			// Hehe std::cout << this->faces_inside.size() << std::endl;
+			// Hehe // Hehe std::cout << this->faces_inside.size() << std::endl;
 			
        	Vector3f p1 = surface->vertices[this->faces_inside[0].x];
 		Vector3f p2 = surface->vertices[this->faces_inside[0].y];
@@ -507,27 +517,27 @@ Interaction BVH_Node::rayIntersect_ForEachSurface(Ray ray, Surface* surface){
 
 void BVH_Node::printSubBVHInformation(Surface* surface, int level){
 	if(level == 0){
-		// Hehe std::cout << "Level 0 has " << this->faces_inside.size() << " surfaces." << std::endl;
+		// Hehe // Hehe std::cout << "Level 0 has " << this->faces_inside.size() << " surfaces." << std::endl;
 	}
 	static int index_assignment = 1;
     if (this->faces_inside.size() == 0){
-        // // Hehe std::cout << "This is a leaf node 0" << std::endl;
+        // // Hehe // Hehe std::cout << "This is a leaf node 0" << std::endl;
         return;
     }
 	if (this->faces_inside.size() == 1){
 		this->index = index_assignment++;
-        // Hehe std::cout << "This is a leaf node 1, has index: " << this->index << "." << std::endl;
-	// 	// Hehe std::cout << "|---- Bounding box limits:" << std::endl;
-	// 	// Hehe std::cout << "|---- " << this->node_bounding_box.min.x << " " << this->node_bounding_box.min.y << " " << this->node_bounding_box.min.z << std::endl;
-	// // Hehe std::cout << "|---- " << this->node_bounding_box.max.x << " " << this->node_bounding_box.max.y << " " << this->node_bounding_box.max.z << std::endl;
-	// 	// Hehe std::cout << "|----" << "Bounding box limits end:" << std::endl;
+        // Hehe // Hehe std::cout << "This is a leaf node 1, has index: " << this->index << "." << std::endl;
+	// 	// Hehe // Hehe std::cout << "|---- Bounding box limits:" << std::endl;
+	// 	// Hehe // Hehe std::cout << "|---- " << this->node_bounding_box.min.x << " " << this->node_bounding_box.min.y << " " << this->node_bounding_box.min.z << std::endl;
+	// // Hehe // Hehe std::cout << "|---- " << this->node_bounding_box.max.x << " " << this->node_bounding_box.max.y << " " << this->node_bounding_box.max.z << std::endl;
+	// 	// Hehe // Hehe std::cout << "|----" << "Bounding box limits end:" << std::endl;
         return;
     }
     else{
-        // Hehe std::cout << "Printing information of left to level: " << level << ", has surfaces: " << this->left_node->faces_inside.size() << std::endl;
+        // Hehe // Hehe std::cout << "Printing information of left to level: " << level << ", has surfaces: " << this->left_node->faces_inside.size() << std::endl;
 		if(this->left_node) this->left_node->printSubBVHInformation(surface, level + 1);
 
-        // Hehe std::cout << "Printing information of right to level: " << level << ", has surfaces: " << this->right_node->faces_inside.size() << std::endl;
+        // Hehe // Hehe std::cout << "Printing information of right to level: " << level << ", has surfaces: " << this->right_node->faces_inside.size() << std::endl;
 		if(this->right_node) this->right_node->printSubBVHInformation(surface, level + 1);
     }
     return;

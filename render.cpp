@@ -14,6 +14,33 @@ long long Integrator::render()
     int y = 540;
     for (int x = 0; x < this->scene.imageResolution.x; x++) {
         for (int y = 0; y < this->scene.imageResolution.y; y++) {
+            if(x == 100 && y == 100){
+                std::cout << "10%" << std::endl;
+            }
+            else if(x == 200 && y == 200){
+                std::cout << "20%" << std::endl;
+            }
+            else if(x == 300 && y == 300){
+                std::cout << "30%" << std::endl;
+            }
+            else if(x == 400 && y == 400){
+                std::cout << "40%" << std::endl;
+            }
+            else if(x == 500 && y == 500){
+                std::cout << "50%" << std::endl;
+            }
+            else if(x == 600 && y == 600){
+                std::cout << "60%" << std::endl;
+            }
+            else if(x == 700 && y == 700){
+                std::cout << "70%" << std::endl;
+            }
+            else if(x == 800 && y == 800){
+                std::cout << "80%" << std::endl;
+            }
+            else if(x == 900 && y == 900){
+                std::cout << "90%" << std::endl;
+            }
             Ray cameraRay = this->scene.camera.generateRay(x, y);
             cameraRay.x = x;
             cameraRay.y = y;
