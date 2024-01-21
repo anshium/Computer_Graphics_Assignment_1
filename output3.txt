@@ -1,0 +1,120 @@
+3
+Using PART_3
+1
+Surface Information, surface: 1
+Number of vertices: 6
+Number of Indices: 2
+Surface Information ends:
+Surface Information, surface: 2
+Number of vertices: 3456
+Number of Indices: 1152
+Surface Information ends:
+Surface Information, surface: 3
+Number of vertices: 3456
+Number of Indices: 1152
+Surface Information ends:
+Surface Information, surface: 4
+Number of vertices: 756
+Number of Indices: 252
+Surface Information ends:
+Reached here
+Here 1
+Here 2
+Here 37
+Here 42
+Here 49
+Here 56
+Here 62
+Here 67
+Here 78
+Here 81
+Here 92
+Here 97
+Here 102
+Here 110
+-49.045 49.045
+-2.30227
+Here 123
+Here 151
+-1.55 1.55
+-2.30227
+Here 123
+Here 151
+-1.32029 1.7677
+-2.30227
+Here 123
+Here 151
+-6.05621 -3.60029
+-2.30227
+Here 123
+Here 132
+Here 159
+Here 37
+Here 42
+Here 161
+Here 37
+Here 42
+Here 49
+Here 56
+Here 62
+Here 67
+Here 78
+Here 81
+Here 92
+Here 97
+Here 102
+Here 110
+-49.045 49.045
+0.111853
+Here 123
+Here 132
+-1.55 1.55
+0.111853
+Here 123
+Here 132
+-1.32029 1.7677
+0.111853
+Here 123
+Here 151
+Here 159
+Here 37
+Here 42
+Here 49
+Here 56
+Here 62
+Here 67
+Here 78
+Here 81
+Here 92
+Here 97
+Here 102
+Here 110
+-49.045 49.045
+0
+Here 123
+Here 142
+-1.55 1.55
+0
+Here 123
+Here 151
+Here 159
+Here 37
+Here 42
+Here 161
+Here 37
+Here 42
+Here 164
+Here 161
+Here 37
+Here 42
+Here 164
+Here 164
+Here 31
+Reached here
+Here :: 289
+Here :: 291
+Here :: 293
+Here :: 295
+Here :: 297
+Here :: 297
+Here :: 300

@@ -11,7 +11,7 @@
 
 void BVH_Node::createBVH(Scene* scene){
 	// std::cout << "Surface First Information -------------------------------------" << std::endl;
-	
+	std::cout << "Here 1" << std::endl;
 	for(int i = 0; i < scene->surfaces.size(); i++){
 		scene->surfaces[i].updateBoundingBox();
 		// std::cout << "Min " << 
@@ -25,38 +25,46 @@ void BVH_Node::createBVH(Scene* scene){
 		this->surfaces_inside.push_back(&scene->surfaces[i]);		// Dunno if &surface would work. It didn't and wouldn't (dangling pointer)	
 	}
 
+	std::cout << "Here 2" << std::endl;
 	// std::cout << "Surface First Information Ends -------------------------------------" << std::endl;
 	this->reallyCreateBVH();
+	std::cout << "Here " << __LINE__ << std::endl;
 	// std::cout << "Added surfaces to main BVH" << std::endl;
 	return;
 }
 
 void BVH_Node::reallyCreateBVH(){
+	std::cout << "Here " << __LINE__ << std::endl;
 	if(this->surfaces_inside.size() == 0){ // Was the problem here?
 		this->is_leaf_node = 1;
 		return;
 	}
+	std::cout << "Here " << __LINE__ << std::endl;
 	if(this->surfaces_inside.size() == 1){ // Was the problem here? Yes there was!
 		this->node_bounding_box.min = surfaces_inside[0]->bounding_box.min;
 		this->node_bounding_box.max = surfaces_inside[0]->bounding_box.max;
 		this->is_leaf_node = 1;
 		return;
 	}
+	std::cout << "Here " << __LINE__ << std::endl;
 	if(this->surfaces_inside.size() >= 2){
 		this->node_bounding_box.min = surfaces_inside[0]->bounding_box.min;
 		this->node_bounding_box.max = surfaces_inside[0]->bounding_box.max;
 		this->is_leaf_node = 0;
 	}
 
+	std::cout << "Here " << __LINE__ << std::endl;
 	for(Surface* surface_ptr : this->surfaces_inside){
 		this->node_bounding_box.update(surface_ptr->bounding_box.min);
 		this->node_bounding_box.update(surface_ptr->bounding_box.max);
 	}
 
+	std::cout << "Here " << __LINE__ << std::endl;
 	// I believe that it would a good idea to have the splitting position based on the extent of the centers and not the bounding boxes minimum and maximum as I was having problems with that previously in one case (Donuts).
 
 	Vector3d range = this->node_bounding_box.max - this->node_bounding_box.min;
 
+	std::cout << "Here " << __LINE__ << std::endl;
 	// std::cout << "+-+-+-Node Bounding Box Information: -+-+-+" << std::endl;
 	// std::cout << this->node_bounding_box.min.x << " " << this->node_bounding_box.min.y << " " << this->node_bounding_box.min.z << std::endl;
 	// std::cout << this->node_bounding_box.max.x << " " << this->node_bounding_box.max.y << " " << this->node_bounding_box.max.z << std::endl;
@@ -67,8 +75,10 @@ void BVH_Node::reallyCreateBVH(){
 	if(range.y > range.x) axis = 1;			// if y axis is larger than the x axis
 	if(range.z > range[axis]) axis = 2;		// if z is the longest axis
 
+	std::cout << "Here " << __LINE__ << std::endl;
 	double min_value = 1e30; 	// Some very large value - Might cause bugs here if scene is very large which is usually unlikely
 	double max_value = -1e30;
+	std::cout << "Here " << __LINE__ << std::endl;
 
 	for(Surface* surface_ptr : this->surfaces_inside){
 		float center_of_bb = (surface_ptr->bounding_box.min[axis] + surface_ptr->bounding_box.max[axis]) / 2;
@@ -79,14 +89,17 @@ void BVH_Node::reallyCreateBVH(){
 			max_value = center_of_bb;
 		}
 	}
+	std::cout << "Here " << __LINE__ << std::endl;
 
 	// double splitting_position = this->node_bounding_box.min[axis] + 0.5 * range[axis];
 	double splitting_position = (min_value + max_value) / 2;
 
+	std::cout << "Here " << __LINE__ << std::endl;
 	// Now add the surfaces accordingly to the left node or the right node.
 	this->left_node = new BVH_Node();
 	this->right_node = new BVH_Node();
 
+	std::cout << "Here " << __LINE__ << std::endl;
 	int added_to_left = 0;
 	int added_to_right = 0;
 
@@ -94,6 +107,7 @@ void BVH_Node::reallyCreateBVH(){
 		// std::cout << "Min " << surface_ptr->bounding_box.min.x << " " << surface_ptr->bounding_box.min.y << " " << surface_ptr->bounding_box.min.z << std::endl;
 		// std::cout << "Max " << surface_ptr->bounding_box.max.x << " " << surface_ptr->bounding_box.max.y << " " << surface_ptr->bounding_box.max.z << std::endl;
 	}
+	std::cout << "Here " << __LINE__ << std::endl;
 	
 	// std::cout << "Chosen Axis: " << axis << std::endl;
 	// std::cout << "Spliiting Position: " << splitting_position << std::endl;
@@ -106,6 +120,7 @@ void BVH_Node::reallyCreateBVH(){
 
 		double bounding_box_center = (surface_ptr->bounding_box.max[axis] + surface_ptr->bounding_box.min[axis]) / 2;
 		// std::cout << "Bounding Box Center: " << bounding_box_center<< std::endl;
+	std::cout << "Here " << __LINE__ << std::endl;
 
 		if(bounding_box_center < splitting_position){
 			this->left_node->surfaces_inside.push_back(surface_ptr);
@@ -114,6 +129,7 @@ void BVH_Node::reallyCreateBVH(){
 			// std::cout << "Put to Left" << std::endl;
 
 			added_to_left += 1;
+		std::cout << "Here " << __LINE__ << std::endl;
 		}
 		// This tie-breaker funnily works! :)
 		else if(bounding_box_center == splitting_position && added_to_left % 2 == 0){
@@ -123,6 +139,7 @@ void BVH_Node::reallyCreateBVH(){
 			// std::cout << "Put to Left" << std::endl;
 
 			added_to_left += 1;
+		std::cout << "Here " << __LINE__ << std::endl;
 		}
 		else{
 			this->right_node->surfaces_inside.push_back(surface_ptr);
@@ -131,6 +148,7 @@ void BVH_Node::reallyCreateBVH(){
 			// std::cout << "Put to Right" << std::endl;
 			
 			added_to_right += 1;
+		std::cout << "Here " << __LINE__ << std::endl;
 		}
 	}
 
@@ -138,9 +156,12 @@ void BVH_Node::reallyCreateBVH(){
 	// std::cout << "Added to right: " << added_to_right << std::endl;
 
 	// std::cout << "Called Recursion on left" << std::endl;
+		std::cout << "Here " << __LINE__ << std::endl;
 	this->left_node->reallyCreateBVH();
+		std::cout << "Here " << __LINE__ << std::endl;
 	// std::cout << "Called Recursion on right" << std::endl;
 	this->right_node->reallyCreateBVH();
+		std::cout << "Here " << __LINE__ << std::endl;
 
 
 	// std::cout << "Exiting reallyCreateBVH" << std::endl;
@@ -203,12 +224,13 @@ Interaction BVH_Node::rayIntersect(Ray ray){
 		if(ray.x == 800 && ray.y == 540){
 			std::cout << "Case 6" << std::endl;
 		}
-        // If it's a leaf node, directly compute the intersection with the surface
+        // If it's a leaf node and option is 2, directly compute the intersection with the surface
 		Interaction si;
 		if(option == 2){
         	si = this->surfaces_inside[0]->rayIntersect(ray);
 		}
 
+		// If the option is 3, there should be a BVH ready for each surface as well, go inside it.
 		if(option == 3){
 			si = this->rayIntersect_ForEachSurface(ray, this->surfaces_inside[0]);
 		}
@@ -264,18 +286,24 @@ Interaction BVH_Node::rayIntersect(Ray ray){
 }
 
 void BVH_Node::createBVH_ForEachSurface(Surface* surface){
-	surface->bvh_node = new BVH_Node();
+	std::cout << "Here :: " << __LINE__ << std::endl;
+	
+	std::cout << "Here :: " << __LINE__ << std::endl;
 	surface->bvh_node->node_bounding_box = surface->bounding_box;
+	std::cout << "Here :: " << __LINE__ << std::endl;
 
-	int i = 0;
+	std::cout << "Here :: " << __LINE__ << std::endl;
 	for(Vector3i face : surface->indices){
-		this->faces_inside[i] = face;
-		i++;
+		std::cout << "Here :: " << __LINE__ << std::endl;
+		this->faces_inside.push_back(face);
 	}
+	std::cout << "Here :: " << __LINE__ << std::endl;
 
 	surface->marryTrianglesWithBoundingBoxes();
+	std::cout << "Here :: " << __LINE__ << std::endl;
 
 	this->reallyCreateBVH_ForEachSurface(surface);
+	std::cout << "Here :: " << __LINE__ << std::endl;
 }
 
 void BVH_Node::reallyCreateBVH_ForEachSurface(Surface* surface){
