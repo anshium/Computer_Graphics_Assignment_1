@@ -27,3 +27,5 @@ The path to scene config (typically named `config.json`) and the path of the out
 ```bash
 ./build/render <scene_path> <out_path>
 ```
+
+In one of the commits, I have said remove log files. I meant remove the contents of the log files.
