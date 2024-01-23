@@ -406,16 +406,16 @@ void BVH_Node::reallyCreateBVH_ForEachSurface(Surface* surface){
 	
 		// Hehe // Hehe std::cout << "Centroid: " << centroid << ", Splitting position: " << splitting_position << ", Difference: " << std::abs(centroid - splitting_position) << std::endl;
 
-		int a = std::abs(centroid - splitting_position) <= 0.00001;
+		int a = std::abs(centroid - splitting_position) <= 0.0001;
 		// Hehe std::cout << "a: " << a << std::endl;
 
-		if(centroid < splitting_position && std::abs(centroid - splitting_position) > 0.00001){
+		if(centroid < splitting_position && std::abs(centroid - splitting_position) > 0.0001){
 			this->left_node->faces_inside.push_back(this->faces_inside[i]);
 			this->is_leaf_node = 0;
 			// Hehe std::cout << "Added to left A, added to left: " << added_to_left << std::endl;
 			added_to_left += 1;
 		}
-		else if(std::abs(centroid - splitting_position) <= 0.00001 && added_to_left % 2 == 0){
+		else if(std::abs(centroid - splitting_position) <= 0.0001 && added_to_left % 2 == 0){
 			this->left_node->faces_inside.push_back(this->faces_inside[i]);
 			this->is_leaf_node = 0;
 			// Hehe std::cout << "Added to left B" << std::endl;
